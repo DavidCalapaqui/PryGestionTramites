@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: frgHead"></head>
+<body id="page-top">
+
+	<div id="wrapper">
+		<ul th:replace="layout :: frgSideBar"></ul>
+
+		<div id="content-wrapper" class="d-flex flex-column">
+
+			<div id="content">
+
+				<nav th:replace="layout :: frgTopBar"></nav>
+
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
+
+					<h1>INDEX</h1>
+				</div>
+				<!-- /.container-fluid -->
+
+			</div>
+
+			<footer th:replace="layout :: frgFooter"></footer>
+
+			<div th:replace="layout :: frgScripts"></div>
+		</div>
+
+
+	</div>
+
+</body>
+</html>

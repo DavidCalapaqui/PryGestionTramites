@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: frgHead"></head>
+<body id="page-top">
+
+	<div id="wrapper">
+		<ul th:replace="layout :: frgSideBar"></ul>
+
+		<div id="content-wrapper" class="d-flex flex-column">
+
+			<div id="content">
+
+				<nav th:replace="layout :: frgTopBar"></nav>
+
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
+
+					<h1 th:text="${title}"></h1>
+				</div>
+				<!-- /.container-fluid -->
+
+			
+				<form th:action="@{/usuario/save}" th:object="${usuario}"  method="post">
+					<div class="row d-flex align-items-center">
+						
+						<div class="col-sm-4">
+							<input type="text" class="form-control"
+								th:field="*{nombre}"
+								placeholder="Nombre de usuario" /> <small
+								class="invalid-feedback" ></small>
+						</div>
+					</div>
+					<div class="row d-flex align-items-center">
+						
+						<div class="col-sm-4">
+							<input type="password" class="form-control"
+								 th:field="*{password}"
+								placeholder="Password" /><small class="invalid-feedback"
+								></small>
+						</div>
+					</div>
+
+					<div class="col-sm-4">
+						<button class="btn btn-primary" type="submit">
+							<i class="fas fa-save"></i> &nbsp;Guardar
+						</button>
+						 <button th:href="@{/}"  class="btn oneMusic-btn mt-30"><i class="fa fa-times"></i> &nbsp;Cancelar</button>
+					</div>
+				</form> 
+				
+				  
+				<button type="button" class="btn btn-secondary" data-toggle="modal"  data-target="#changePasswordModal">Change Password</button>
+				
+
+			</div>
+
+			<footer th:replace="layout :: frgFooter"></footer>
+
+			<div th:replace="layout :: frgScripts"></div>
+			
+		</div>
+
+	</div>
+
+
+</body>
+</html>

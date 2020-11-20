@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: frgHead"></head>
+<body id="page-top" onload="Cargar()">
+
+	<div id="wrapper">
+		<ul th:replace="layout :: frgSideBar"></ul>
+
+		<div id="content-wrapper" class="d-flex flex-column">
+
+			<div id="content">
+
+				<nav th:replace="layout :: frgTopBar"></nav>
+
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
+
+					<h1 th:text="${title}"></h1>
+
+
+
+					<form th:action="@{/solicitante/save}" th:object="${solicitante}"
+						method="post" style="width: 18rem;">
+						<label>C&eacute;dula / RUC</label>
+						<div class="form-group input-group">
+							<input id="txtId" type="text" th:field="*{identificacion}"
+								class="form-control" onkeypress='return validaNumericos(event)'
+								onkeyup="ValidarIdentificacion()" maxlength="13"
+								placeholder="Ingrese C&eacute;dula / RUC " required>
+								
+
+						</div>
+						  <div class="alert alert-danger d-none" id="lblErrId">
+							Identificaci&oacute;n incorrecta
+						</div>
+						
+								
+
+						<div class="form-group">
+							<label>Nombre</label> <input type="text" th:field="*{nombre}"
+								class="form-control" placeholder="Ingrese el nombre" required>
+						</div>
+						<div class="form-check"></div>
+						<button type="submit" class="btn btn-primary" >Guardar
+							Solicitante</button>
+						<input type="hidden" th:field="*{idSolicitante}" readonly/>
+					</form>
+
+				</div>
+				<!-- /.container-fluid -->
+
+			</div>
+
+			<footer th:replace="layout :: frgFooter"></footer>
+
+			<div th:replace="layout :: frgScripts"></div>
+
+			<script type="text/javascript">
+				function validaNumericos(event) {
+					if (event.charCode >= 48 && event.charCode <= 57) {
+						return true;
+					}
+					return false;
+				}
+
+				function ValidarIdentificacion() {
+					let identificacion = $("#txtId").val();
+					if (identificacion.length === 10
+							|| identificacion.length === 13) {
+						$("#lblErrId").addClass("d-none");
+					} else {
+						$("#lblErrId").removeClass("d-none");
+
+					}
+				}
+
+				function Cargar() {
+					$("#lblErrId").addClass("d-none");
+				}
+			</script>
+
+
+		</div>
+
+	</div>
+
+
+
+</body>
+</html>

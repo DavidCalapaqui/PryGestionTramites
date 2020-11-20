@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: frgHead">
+<script type="text/javascript">
+	function validaNumericos(event) {
+		if (event.charCode >= 48 && event.charCode <= 57) {
+			return true;
+		}
+		return false;
+	}
+
+	function Cargar() {
+		$("#lblEmptySolicitante").addClass("d-none");
+		$("#lblIncorrectId").addClass("d-none");
+		$("#lblIncorrectId").addClass("d-none");
+
+		document.getElementById('btnSubmit').disabled = true;
+
+	}
+</script>
+
+
+</head>
+<body id="page-top" onload="Cargar()">
+
+	<div id="wrapper">
+		<ul th:replace="layout :: frgSideBar"></ul>
+
+		<div id="content-wrapper" class="d-flex flex-column">
+
+			<div id="content">
+
+				<nav th:replace="layout :: frgTopBar"></nav>
+
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
+
+					<h1 th:text=${titulo}></h1>
+
+					<form th:action="@{/tramite/save}" th:object="${tramite}"
+						enctype="multipart/form-data" method="post" style="width: 60rem;">
+						<div class="row">
+							<div class="col-sm card">
+								<!-- DATOS DE SOLICITANTE -->
+								<div class="container form-group">
+									<br> <label><h4>Datos de Solicitante</h4></label><br>
+									<!-- BUSCADOR DE CEDULA -->
+									<label for="exampleFormControlTextarea1">C&eacute;dula
+										/ RUC</label>
+									<div class="input-group">
+
+										<input id="txtIdentificacion" type="text"
+											onkeypress='return validaNumericos(event)'
+											class="form-control bg-light  small"
+											placeholder="Ingrese cedula o RUC..." aria-label="Search"
+											aria-describedby="basic-addon2" maxlength="13">
+
+
+										<div class="input-group-append">
+											<button class="btn btn-primary" type="button"
+												onclick="searchOneByIdentificacion();">
+												<i class="fas fa-search fa-sm"></i>
+											</button>
+										</div>
+
+									</div>
+									<div class="alert alert-danger d-none" id="lblIncorrectId">Identificacion
+										Incorrecta</div>
+
+									<br>
+									<!-- TEXTBOX CON EL NOMBRE SEGUN LA CEDULA-->
+									<label>Nombre Solicitante</label> <input id="txtNombreSol"
+										name="txtNombreSol" type="text" readonly
+										class="form-control bg-light  small"
+										aria-describedby="basic-addon2">
+
+									<div class="alert alert-danger d-none" id="lblEmptySolicitante">Debe
+										seleccionar un solicitante para ingresar el tramite</div>
+
+									<input type="hidden" id="txtSol" name="txtSol"> <br>
+									<div class="row form-group">
+										<p>Si no encuentra el solicitante registrelo</p>
+										<a th:href="@{/solicitante/create}"><p>aqu&iacute;</p> </a>
+									</div>
+
+
+								</div>
+							</div>
+
+							<div class="col-sm card">
+								<!-- DATOS DE TRAMITE -->
+								<div class="container form-group">
+									<br> <label>
+										<h4>Datos de Tr&aacute;mite</h4>
+									</label>
+									<!-- TextArea de Asunto -->
+									<div class="form-group">
+										<label for="exampleFormControlTextarea1">Asunto</label>
+										<textarea class="form-control" name="txtAsunto" id="txtAsunto"
+											rows="3" maxlength="250" required></textarea>
+									</div>
+
+									<!-- Aparece cuando se está actualizando par setear la fecha, hora y direcciond del trámite sumillado -->
+									<div  th:if="${isEdit}">
+										<label for="exampleFormControlTextarea1">Ingrese la direcci&oacute;n, fecha y hora de la sumilla</label>
+										<!-- Direccion -->
+										<div class="form-group">
+											<select class="form-control" id="exampleFormControlSelect1" 
+												th:field="*{direccion}">
+												
+												<option th:each="d : ${direcciones}" th:text="${d.nombre}"
+													th:value="${d.idDireccion}">
+											</select>
+
+										</div>
+										<!-- Fecha y hora -->
+										<div class="form-group">
+
+											<div class="row">
+												<div class="col">
+													<input type="date" class="form-control" id="fechaDir" name="fechaDir"
+														th:field="*{fechaIngresoDireccion}"
+														th:errorclass="'form-control is-invalid'" />
+
+												</div>
+
+												<div class="col">
+													<input type="time" class="form-control" id="horaDir" name="horaDir"
+														th:field="*{horaIngresoDireccion}">
+												</div>
+											</div>
+
+										</div>
+
+									</div>
+
+									<!-- File Input-->
+									<div class="row ">
+
+										<div class="col">
+											<label for="exampleFormControlFile1">Cargar el
+												archivo en formato PDF </label>
+
+										</div>
+
+										<div class="col">
+											<input accept=".pdf" type="file" class="form-control-file"
+												id="file" name="file"> <input type="hidden"
+												id="auxFile" name="auxFile">
+
+										</div>
+
+										<div th:if="${tramite.documento != null}"
+											class="alert alert-warning" id="lblEmptySolicitante">El
+											tr&aacute;mite ya contiene un archivo. Si desea puede
+											actualizarlo por otro, si no se conservar&aacute; el archivo
+											anterior</div>
+
+
+									</div>
+								</div>
+							</div>
+
+						</div>
+
+						<div class="row">
+							<div class="col"></div>
+							<div class="col">
+								<br>
+								<button type="submit" class="btn btn-primary btn-lg btn-block"
+									id="btnSubmit">Guardar</button>
+							</div>
+							<div class="col"></div>
+						</div>
+
+						<input type="hidden" th:field="*{idTramite}" id="txtIdTram" />
+
+
+					</form>
+
+				</div>
+				<!-- /.container-fluid -->
+			</div>
+
+			<footer th:replace="layout :: frgFooter"></footer>
+
+			<div th:replace="layout :: frgScripts"></div>
+
+
+			<script th:src="@{/js/solicitante/buscar-solicitante.js}"></script>
+			<script th:src="@{/js/tramite/validar-peso-archivo.js}"></script>
+			<script type="text/javascript">
+				setInterval(function() {
+					DesbloquearBoton();
+				}, 1);
+
+				function validaNumericos(event) {
+					if (event.charCode >= 48 && event.charCode <= 57) {
+						return true;
+					}
+					return false;
+				}
+
+				function Cargar() {
+					$("#lblEmptySolicitante").addClass("d-none");
+					$("#lblIncorrectId").addClass("d-none");
+					$("#lblIncorrectId").addClass("d-none");
+
+					document.getElementById('btnSubmit').disabled = true;
+
+				}
+
+				function DesbloquearBoton() {
+
+					let sol = $("#txtSol").val();
+					let asunto = $("#txtAsunto").val();
+					let auxArchivo = $("#auxFile").val();
+					let idTram = $("#txtIdTram").val();
+					let fechaDir = $("#fechaDir").val();
+					let horaDir = $("#horaDir").val();
+					
+
+					let desbloquear = false;
+					//&& fechaDir.length !=0 && horaDir.length != 0
+					//si se está actualizando, no importa el archivo porque ya tiene uno	
+					if (idTram.length != 0) {
+						if (sol.length != 0 && asunto.length != 0 ) {
+							desbloquear = true;
+						} else {
+							desbloquear = false;
+
+						}
+						//entonces se esta ingresando un nuevo
+
+					}///else{
+					//si no se está actualizando, se comprueba que el file esté lleno 
+					if (document.getElementById("file").files.length != 0
+							&& sol.length != 0 && asunto.length != 0) {
+
+						desbloquear = true;
+					}
+					
+
+					if ((desbloquear) === true) {
+						document.getElementById('btnSubmit').disabled = false;
+					} else {
+						document.getElementById('btnSubmit').disabled = true;
+					}
+				}
+			</script>
+
+		</div>
+
+	</div>
+	<!--  onchange="searchByIdentificacion();"-->
+
+</body>
+</html>

@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: frgHead">
+
+
+</head>
+<body id="page-top">
+
+	<div id="wrapper">
+		<ul th:replace="layout :: frgSideBar"></ul>
+
+		<div id="content-wrapper" class="d-flex flex-column">
+
+			<div id="content">
+
+				<nav th:replace="layout :: frgTopBar"></nav>
+
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
+
+					<h1 th:text="${title}"></h1>
+
+					<!-- /.container-fluid -->
+
+					<!-- DataTales Example -->
+					<div class="card shadow mb-4">
+
+						<div class="card-body">
+							<div class="table-responsive">
+								<table class="table table-bordered table table-striped"
+									id="dataTable" name="dataTable" width="100%" cellspacing="0">
+									<thead>
+										<tr>
+											<th>#</th>
+											<th>Identificaci&oacute;n</th>
+											<th>Nombre</th>
+											<th>Opciones</th>
+
+										</tr>
+									</thead>
+									<tfoot>
+										<tr>
+											<th>#</th>
+											<th>Identificaci&oacute;n</th>
+											<th>Nombre</th>
+											<th>Opciones</th>
+
+										</tr>
+									</tfoot>
+									<tbody>
+										<tr th:each="s : ${solicitantes}">
+
+											<td th:text="${s.idSolicitante}"></td>
+											<td th:text="${s.identificacion}"></td>
+											<td th:text="${s.nombre}"></td>
+
+
+											<td>
+												<!-- UPDATE --> <a sec:authorize="hasAuthority('ROLE_ARCH')"
+												class="btn btn-xs academy-btn btn-2"
+												th:href="@{/solicitante/update/} + ${s.idSolicitante}"><i
+													class="fas fa-user-edit"></i></a> <!-- DELETE -->
+												<button sec:authorize="hasAuthority('ROLE_ARCH')"
+													th:onclick="'eliminar('+${s.idSolicitante}+')'"
+													class="btn btn-xs academy-btn btn-4">
+													<i class="fas fa-trash-alt"></i>
+												</button>
+											</td>
+
+
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<footer th:replace="layout :: frgFooter"></footer>
+
+		<div th:replace="layout :: frgScripts"></div>
+
+
+		<script th:src="@{/js/tramite/delete-tramite.js}"></script>
+	</div>
+
+
+</body>
+</html>

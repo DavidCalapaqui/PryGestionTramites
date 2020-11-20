@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: frgHead">
+
+
+</head>
+<body id="page-top">
+
+	<div id="wrapper">
+		<ul th:replace="layout :: frgSideBar"></ul>
+
+		<div id="content-wrapper" class="d-flex flex-column">
+
+			<div id="content">
+
+				<nav th:replace="layout :: frgTopBar"></nav>
+
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
+
+					<h1> Tr&aacute;mites ingresados</h1>
+
+					<!-- /.container-fluid -->
+
+					<!-- DataTales Example -->
+					<div class="card shadow mb-4">
+
+						<div class="card-body">
+							<div class="table-responsive">
+								<table class="table table-bordered table table-striped"
+								id="dataTable" name="dataTable" width="100%" cellspacing="0">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th>Solicitante</th>
+										<th>Asunto</th>
+										<th>Fecha de Ingreso</th>
+										<!--<th>Direccion</th>-->
+										<!--<th>Respuesta</th>-->
+										<th>Opciones</th>
+
+									</tr>
+								</thead>
+								<tfoot>
+									<tr>
+										<th>#</th>
+										<th>Solicitante</th>
+										<th>Asunto</th>
+										<th>Fecha de Ingreso</th>
+										<!--  <th>Direccion</th>-->
+										<!--<th>Respuesta</th>-->
+										<th>Opciones</th>
+
+									</tr>
+								</tfoot>
+								<tbody>
+									<tr th:each="t : ${tramites}">
+
+										<td th:text="${t.idTramite}"></td>
+										<td th:text="${t.solicitante}"></td>
+										<td th:text="${t.asunto}"></td>
+										<!--<td th:text="${t.obtenerFechaIngreso()}"></td>-->
+										<td th:text="${#dates.format(t.fechaIngreso, 'dd-MMM-yyyy') + ' - ' +#dates.format(t.horaIngreso, 'HH:mm:ss')}">
+										<!--<td th:text="${t.direccion} ?: 'No asignado'"></td>-->
+										<!--<td th:text="${t.respuesta} ?: 'Sin Respuesta'"></td>-->
+
+										<td>
+											<!-- Asignar Direccion --> <a th:if="${t.direccion == null}"
+											sec:authorize="hasAuthority('ROLE_ALC')"
+											class="btn btn-xs academy-btn btn-3 btn btn-success"
+											th:href="@{/tramite/assignDireccion/} + ${t.idTramite}"><i
+												class="far fa-share-square"></i> </a> <!-- Asignar Unidad --> <a
+											th:if="${t.unidad == null}"
+											sec:authorize="hasAuthority('ROLE_DIR')"
+											class="btn btn-xs academy-btn btn-3 btn btn-success"
+											th:href="@{/tramite/assignUnit/} + ${t.idTramite}"><i
+												class="far fa-share-square"></i> </a> <!-- Responder --> <!-- <a  sec:authorize="hasAuthority('ROLE_ALC')"   class="btn btn-xs academy-btn btn-3 btn btn-warning"
+											th:href="@{/tramite/replyProcedure/} + ${t.idTramite}"><i class="fas fa-reply"></i> </a> -->
+
+											<!-- Responder DEP--> <a
+											sec:authorize="hasAuthority('ROLE_UNI')"
+											class="btn btn-xs academy-btn btn-2"
+											th:href="@{/tramite/replyProcedure/} + ${t.idTramite}"><i
+												class="fas fa-reply"></i> </a> <a class="btn"
+											th:href="@{/tramite/retrieve/} + ${t.idTramite}"><i
+												class="fas fa-eye"></i></a> <!-- UPDATE --> <a
+											
+											sec:authorize="hasAuthority('ROLE_ARCH')"
+											class="btn btn-xs academy-btn btn-2"
+											th:href="@{/tramite/update/} + ${t.idTramite}"><i
+												class="fas fa-edit"></i></a> <!-- DELETE -->
+											<button sec:authorize="hasAuthority('ROLE_ARCH')"
+												th:onclick="'eliminar('+${t.idTramite}+')'"
+												class="btn btn-xs academy-btn btn-4">
+												<i class="fas fa-trash-alt"></i>
+											</button>
+										</td>
+
+
+									</tr>
+								</tbody>
+							</table>
+							
+							
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+
+		</div>
+
+		<footer th:replace="layout :: frgFooter"></footer>
+
+		<div th:replace="layout :: frgScripts"></div>
+
+
+		<script th:src="@{/js/tramite/delete-tramite.js}"></script>
+	</div>
+
+
+</body>
+</html>

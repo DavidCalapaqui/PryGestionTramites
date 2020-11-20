@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout :: frgHead"></head>
+<body id="page-top">
+
+	<div id="wrapper">
+		<ul th:replace="layout :: frgSideBar"></ul>
+
+		<div id="content-wrapper" class="d-flex flex-column">
+
+			<div id="content">
+
+				<nav th:replace="layout :: frgTopBar"></nav>
+
+				<!-- Begin Page Content -->
+				<div class="container-fluid">
+
+
+
+					<div class="row justify-content-between">
+						<div class="col-4">
+							<h1
+								th:text="'Tr&aacute;mite N&uacute;mero ' + ${tramite.idTramite} ?: 'Sin Respuesta'"></h1>
+						</div>
+						<div class="col"></div>
+						<div class="col"></div>
+						<div class="col-4">
+							<a th:href="@{/tramite/list}" class="btn btn-success btn-lg">
+								<i class="fas fa-arrow-left"></i>&nbsp;Back to List
+							</a>
+						</div>
+
+					</div>
+
+					<!-- <h1
+							th:text="'Tr&aacute;mite n&uacute;mero ' + *{tramite.idTramite}"></h1> -->
+					<div class="row">
+						<div class="col-sm card">
+							<!-- DATOS DE SOLICITANTE -->
+							<div class="container form-group">
+								<br> <label><h4>Datos de Solicitante</h4></label><br>
+
+								<!-- BUSCADOR DE CEDULA -->
+								<div class="row">
+									<div class="col">
+										<label for="exampleFormControlTextarea1">C&eacute;dula
+											/ RUC</label>
+									</div>
+									<div class="col">
+										<input id="txtNombreSol" type="text"
+											class="form-control bg-light  small"
+											aria-describedby="basic-addon2" readonly
+											th:value="${tramite.solicitante.identificacion} ?: 'No definido'">
+									</div>
+
+								</div>
+								<br>
+
+								<!-- Nombre solicitante -->
+								<div class="row">
+									<div class="col">
+										<!-- TEXTBOX CON EL NOMBRE SEGUN LA CEDULA-->
+										<label>Nombre Solicitante</label>
+									</div>
+									<div class="col">
+										<input id="txtNombreSol" type="text"
+											class="form-control bg-light small"
+											aria-describedby="basic-addon2" readonly
+											th:value="${tramite.solicitante} ?: 'No definido'">
+									</div>
+
+								</div>
+								<hr>
+
+								<label>
+									<h4>Datos de Tr&aacute;mite</h4>
+								</label>
+								<!-- Fecha ingreso en archivo -->
+								<div class="row">
+									<div class="col">
+										<label>Fecha de Ingreso</label>
+									</div>
+									<div class="col">
+										<input id="txtNombreSol" type="text"
+											class="form-control bg-light  small"
+											aria-describedby="basic-addon2" readonly
+											th:value="${tramite.obtenerFechaIngreso()} ?: 'No definido'">
+									</div>
+
+								</div>
+								<br>
+								<!-- Asunto -->
+								<div class="row">
+									<div class="col-sm-4">
+										<label for="exampleFormControlTextarea1">Asunto</label>
+									</div>
+									<div class="col-md-8">
+										<textarea th:text="${tramite.asunto} ?: 'Sin Asunto'"
+											class="form-control" name="txtAsunto"
+											id="exampleFormControlTextarea1" rows="3" readonly></textarea>
+
+									</div>
+								</div>
+								<hr>
+
+								<!-- Button trigger modal -->
+								<button type="button" class="btn btn-primary btn-lg active"
+									data-toggle="modal" data-target="#exampleModal">
+									<i class="fas fa-file-pdf"></i> Ver documento
+								</button>
+
+							</div>
+						</div>
+
+						<div class="col-sm card">
+							<!-- DATOS DE TRAMITE -->
+							<div class="container form-group">
+								<br>
+
+								<!-- TextArea de Asunto -->
+
+
+								<label>
+									<h4>Escriba una respuesta y seleccione la direcci&oacute;n
+										a asignar</h4>
+								</label>
+
+								<form method=post th:action="@{/tramite/putDireccion}"
+									enctype="multipart/form-data">
+
+									<div class="row">
+										<div class="col-sm-4">
+											<label>Respuesta</label>
+										</div>
+										<div class="col-md-8">
+											<textarea class="form-control" name="txtRespuesta"
+												id="exampleFormControlTextarea1" rows="3" required></textarea>
+										</div>
+									</div>
+									<br>
+									<div class="row form-group">
+
+										<div class="col">
+											<label for="exampleFormControlFile1">Cargar el
+												archivo en formato PDF </label>
+										</div>
+
+										<div class="col">
+											<input accept=".pdf" type="file" class="form-control-file"
+												id="file" name="file" required> <input type="hidden"
+												id="auxFile" name="auxFile">
+
+										</div>
+									</div>
+
+
+									<div class="row">
+										<div class="col">
+											<label>Seleccione la direcci&oacute; a asignar</label>
+										</div>
+										<div class="col">
+											<!-- select direcciones -->
+											<div class="form-group">
+												<select class="form-control" id="slcDirecciones"
+													name="slcDirecciones">
+													<option value=0>- Seleccione -</option>
+
+												</select>
+											</div>
+										</div>
+									</div>
+
+
+									<div class="row">
+										<div class="col"></div>
+										<div class="col">
+											<br>
+											<button type="submit"
+												class="btn btn-primary btn-lg btn-block">
+												<i class="far fa-share-square"></i> Asignar
+											</button>
+										</div>
+										<div class="col"></div>
+									</div>
+
+									<input th:value="${tramite.idTramite}" type="hidden"
+										id="txtIdTram" name="txtIdTram" />
+								</form>
+
+							</div>
+						</div>
+					</div>
+
+					<!-- Modal -->
+					<div class="modal fade" id="exampleModal" tabindex="-1"
+						role="dialog" aria-labelledby="exampleModalLabel"
+						aria-hidden="true">
+						<div class="modal-dialog modal-lg" role="document">
+							<div class="modal-content">
+								<div class="modal-header">
+
+									<button type="button" class="close" data-dismiss="modal"
+										aria-label="Close">
+										<span aria-hidden="true">&times;</span>
+									</button>
+								</div>
+								<div class="modal-body">
+
+									<!-- DOCUMENTO -->
+									<div class="row container">
+										<iframe th:src="@{'/uploads/' + ${tramite.documento}}"
+											width="100%" height="500px"> </iframe>
+									</div>
+								</div>
+								<div class="modal-footer">
+									<button type="button" class="btn btn-secondary"
+										data-dismiss="modal">Cerrar</button>
+
+								</div>
+							</div>
+						</div>
+					</div>
+
+
+				</div>
+				<!-- /.container-fluid -->
+
+			</div>
+
+			<footer th:replace="layout :: frgFooter"></footer>
+
+			<div th:replace="layout :: frgScripts"></div>
+			<script th:src="@{/js/solicitante/cargar-select-departamentos.js}"></script>
+			<script th:src="@{/js/tramite/validar-peso-archivo.js}"></script>
+
+		</div>
+
+	</div>
+	<div th:include="templates/usuario/change-password.html"
+		th:remove="tag"></div>
+	<div th:remove="tag"></div>
+
+
+</body>
+</html>
