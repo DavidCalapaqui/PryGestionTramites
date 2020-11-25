@@ -26,28 +26,38 @@
 					<div class="row">
 						<!-- Desde -->
 						<div class="col">
+
 							<div class="form-group class col col-sm-8">
-								<input type="date" class="form-control" id="desde" name="hasta" />
+								<label for="exampleFormControlFile1">Desde </label> <input
+									type="date" class="form-control" id="desde" name="desde" />
+								<div class="alert alert-danger  d-none" id="lblDesdeFecha">Debe
+									seleccionar una fecha de inicio</div>
 							</div>
+
 						</div>
 						<!-- Hasta -->
 						<div class="col">
+							<label for="exampleFormControlFile1">Hasta</label>
 							<div class="form-group class col col-sm-8">
 								<input type="date" class="form-control" id="hasta" name="hasta" />
+								<div class="alert alert-danger d-none" id="lblHastaFecha">Debe
+									seleccionar una fecha fin</div>
 							</div>
+
 
 						</div>
 						<!-- Consultar -->
 						<div class="col">
-							<button class="btn btn-primary" onclick="ConsultarTramites()">Consultar</button>
+							<br>
+							<button class="btn btn-primary btn-lg"
+								onclick="ConsultarTramites()">Consultar</button>
 						</div>
 
-						
+
 					</div>
 					<br>
 					<!-- Alertas -->
-					<div class="alert alert-danger d-none" id="lblErrFecha">Debe
-						seleccionar una fecha</div>
+
 					<div class="alert alert-primary d-none" role="alert"
 						id="lblErrNoTram">No se han encontrado tr&aacute;mites en
 						esta fecha, intenta con otra.</div>
@@ -65,21 +75,28 @@
 
 
 									<div class="col-md-auto">
-										<!--  <a href="#"
-											class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-											class="fas fa-download fa-sm text-white-50"></i> Generar
-											Reporte</a>-->
-										<!--  <form action="/reportTramite/report" method="get">-->
 
-										<input type="hidden" id="fechaAux" name="fechaAux">
+										<div class="row">
+											<div class="col">
+												<input type="radio" id="male" name="format" value="excel">
+												<label for="male">Excel</label> <input type="radio"
+													id="male" name="format" value="pdf" checked> <label
+													for="male">Pdf</label>
+											</div>
 
-										<button type="submit" onclick="GenerarReporte()"
-											class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
-											<i class="fas fa-download fa-sm text-white-50"></i> Generar
-											Reporte
-										</button>
+											<div class="col">
+												<button onclick="GenerarReporte()"
+													class="btn btn-primary text-nowrap" type="button">
+													<span class="spinner-border spinner-border-sm mr-2 d-none"
+														id="spnSpinner"></span> Generar Reporte <i
+														class="fas fa-download fa-sm text-white-50"> <span
+														class="spinner-border spinner-border-sm mr-2"></span>
 
-										<!--  </form>-->
+													</i>
+												</button>
+
+											</div>
+										</div>
 
 
 									</div>
@@ -130,10 +147,7 @@
 
 						</div>
 
-
 					</div>
-
-
 
 				</div>
 				<div>
@@ -144,115 +158,7 @@
 					<div th:replace="layout :: frgScripts"></div>
 
 
-					<script type="text/javascript">
-						
-						let fechaAux = ""; 
-					
-					
-						function ConsultarTramites() {
-							let desde = $('#desde').val();
-							let hasta = $('#hasta').val();
-							//let fechaAux = $('#fechaAux').val();
-							//fechaAux = fecha;						
-							//alert(fechaAux);
-							
-							if(desde.length != 0){
-								$("#lblErrFecha").addClass("d-none");
-								//$('#fechaAux').val(fecha);
-								//console.log("Aux : " ,fechaAux );
-							
-								$.ajax({
-									url : "/tramite/getTramitesBetweenDates/"
-											+ desde + "/" +hasta+"/",
-									method : 'GET',
-									success : function(response) {
-										//console.log(response);
-										let tramites = [];
-										tramites = response;
-										console.log('Tramites', tramites);
-										
-										if(tramites.length != 0){
-											$("#lblErrNoTram").addClass("d-none");
-											
-											document.getElementById('lblTituloRep').innerHTML = 'Reporte de tramites ingresados desde '+ desde + ' hasta '+ hasta;
-											$("#table").removeClass("d-none");
-											$(".odd").remove();
-											$(".other").remove();
-											//for(var i=0; i<=tramites.length; i++){
-											for(t of tramites){
-												console.log(t);
-												
-												var fila = '<tr id="row" class="other"><td>'
-												+ t.idTramite
-												+ '</td><td>'
-												+ t.solicitante.identificacion
-												+ '</td><td>'
-												+ t.solicitante.nombre
-												+ '</td><td>'
-												+ t.asunto
-												+ '</td><td>'
-												+ t.fechaIngreso.substring(0,10)											
-												+ '</td><td>'
-												+ t.horaIngreso
-												+ '</td></tr>'; //esto seria lo que contendria la fila
-												
-												
-												$('#dataTable tr:first').after(fila);
-											
-											}
-										}else{
-											$("#lblErrNoTram").removeClass("d-none");
-											$("#table").addClass("d-none");
-										}
-									},
-									error : function(err) {
-										console.error(err);
-										//console.error(err.responseText);
-									}
-								});
-								}else{
-									$("#lblErrFecha").removeClass("d-none");	
-								}
-								
-							}
-							
-							
-							function GenerarReporte(){
-								let desde = $('#desde').val();
-								let hasta = $('#hasta').val();
-								
-									
-									$.ajax({
-										url : "/reportTramite/reportTwoDates/"
-												+ desde + "/"+hasta+"/",
-										method : 'GET',
-										success : function(response) {
-											
-											console.log(response);
-											//swal("Reporte Generado", response , "success");
-											Swal.fire({
-												title: 'Reporte entre fechas Generado',
-												  text: response,
-												  icon: 'success',
-										
-												  confirmButtonText: 'ok'
-											}).then(function (result) {
-											    if (result.value) {
-											    	//window.location.href = "delete/"+id
-											    	console.log(result);
-											    } 
-											})
-										},
-										error : function(err) {
-											console.error(err);
-											console.error(err.responseText);
-										}
-									});
-									
-								
-							}
-							
-					</script>
+					<script th:src="@{/js/tramite/consultar-generar-reporte-dos-fechas.js}"></script>
 				</div>
 
 

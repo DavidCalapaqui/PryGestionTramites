@@ -9,16 +9,12 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.validation.annotation.Validated;
-
-import javax.validation.Valid;
 
 import java.util.Date;
 import java.io.IOException;
@@ -30,8 +26,6 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
-
 import com.calapaqui.tramites.models.services.IDireccionService;
 import com.calapaqui.tramites.models.services.IRespuestaService;
 import com.calapaqui.tramites.models.services.ISolicitanteService;
@@ -40,7 +34,6 @@ import com.calapaqui.tramites.models.services.IUnidadService;
 import com.calapaqui.tramites.models.services.UsuarioService;
 
 import com.calapaqui.tramites.models.entities.Direccion;
-import com.calapaqui.tramites.models.entities.Respuesta;
 import com.calapaqui.tramites.models.entities.Solicitante;
 import com.calapaqui.tramites.models.entities.Tramite;
 import com.calapaqui.tramites.models.entities.Unidad;
@@ -61,9 +54,6 @@ public class TramiteController {
 
 	@Autowired
 	private IUnidadService srvUnidad;
-
-	@Autowired
-	private IRespuestaService srvRespuesta;
 
 	@Autowired
 	private UsuarioService srvUsuario;
@@ -330,7 +320,7 @@ public class TramiteController {
 
 	@PostMapping(value = "/save")
 	public String Save(@Validated Tramite tramite, BindingResult result, Model model,
-			@RequestParam("file") MultipartFile file, String txtAsunto, String txtSol, String auxFile,
+			@RequestParam("file") MultipartFile file, String txtAsunto,String txtSumilla, String txtSol, String auxFile,
 			RedirectAttributes flash) {
 
 		// Hora y fecha del sistema
@@ -359,6 +349,7 @@ public class TramiteController {
 			tramite.setFechaIngreso(tramiteBD.getFechaIngreso());
 			tramite.setHoraIngreso(tramiteBD.getHoraIngreso());
 			tramite.setAsunto(txtAsunto);
+			tramite.setRespuesta(txtSumilla);;
 			tramite.setSolicitante(soli);
 			if (!file.isEmpty()) {
 				tramite.setDocumento(this.srvTramite.CargarArchivo(file));
@@ -435,44 +426,4 @@ public class TramiteController {
 
 }
 
-//String message = "Tramite agregado correctamente";
-//String titulo = "Nuevo registro de tramite";
-//
-//if (tramite.getIdTramite() != null) {
-//
-//	message = "Tramite actualizado correctamente";
-//	titulo = "Actualizando el registro numero " + tramite.getIdTramite();
-//}
-//
-//if (!file.isEmpty()) {
-//	Path directorioRecursos = Paths.get("src//main//resources//static//uploads");
-//	String rootPath = directorioRecursos.toFile().getAbsolutePath();
-//	try {
-//
-//		byte[] bytes = file.getBytes();
-//		Path rutaCompleta = Paths.get(rootPath + "//" + file.getOriginalFilename());
-//		Files.write(rutaCompleta, bytes);
-//
-//		tramite.setDocumento(file.getOriginalFilename());
-//
-//	} catch (IOException e) {
-//
-//		e.printStackTrace();
-//	}
-//} else {
-//	tramite.setDocumento(auxFile);
-//}
-//
-//tramite.setFechaIngreso(tramite.getFechaIngreso());
-//tramite.setHoraIngreso((Date) tramite.getHoraIngreso());
-//
-//tramite.setSolicitante(soli);
-//tramite.setAsunto(txtAsunto);
-//
-//this.srvTramite.Save(tramite);
-//
-//if (tramite.getIdTramite() != null) {
-//	flash.addFlashAttribute("success", "Trámite actualizado ");
-//
-//}
-//flash.addFlashAttribute("success", "Trámite ingresado ");
+

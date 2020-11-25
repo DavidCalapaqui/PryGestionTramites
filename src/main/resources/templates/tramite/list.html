@@ -36,7 +36,7 @@
 										<th>Asunto</th>
 										<th>Fecha de Ingreso</th>
 										<!--<th>Direccion</th>-->
-										<!--<th>Respuesta</th>-->
+										<th>Sumilla</th>
 										<th>Opciones</th>
 
 									</tr>
@@ -62,7 +62,7 @@
 										<!--<td th:text="${t.obtenerFechaIngreso()}"></td>-->
 										<td th:text="${#dates.format(t.fechaIngreso, 'dd-MMM-yyyy') + ' - ' +#dates.format(t.horaIngreso, 'HH:mm:ss')}">
 										<!--<td th:text="${t.direccion} ?: 'No asignado'"></td>-->
-										<!--<td th:text="${t.respuesta} ?: 'Sin Respuesta'"></td>-->
+										<td th:text="${t.respuesta} ?: 'No sumillado'"></td>
 
 										<td>
 											<!-- Asignar Direccion --> <a th:if="${t.direccion == null}"

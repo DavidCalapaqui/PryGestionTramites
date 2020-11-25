@@ -115,7 +115,17 @@
 									</div>
 
 								</div>
+								
+								<div class="row" th:if="${tramite.respuesta != null}">
+									<div class="col">
+										<label>Sumilla: </label>
+									</div>
 
+									<div class="col">
+										<strong><label
+											th:text="${tramite.respuesta} ?: 'No sumillado'"></label></strong>
+									</div>
+								</div>
 								<div class="row" th:if="${tramite.direccion != null}">
 									<div class="col">
 										<label>Fecha y hora sumilla: </label>
@@ -141,7 +151,7 @@
 						<div class=col></div>
 						<div class=col>
 							<a th:href="@{/tramite/list}" class="btn btn-success btn-lg">
-								<i class="fas fa-arrow-left"></i>&nbsp;Back to List
+								<i class="fas fa-arrow-left"></i>&nbsp;Regresar a la Lista
 							</a>
 						</div>
 

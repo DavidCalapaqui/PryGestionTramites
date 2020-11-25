@@ -1,35 +1,24 @@
 package com.calapaqui.tramites.controllers;
 
-import java.util.List;
-
-import javax.validation.Valid;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.calapaqui.tramites.dto.ChangePasswordForm;
-import com.calapaqui.tramites.models.entities.Direccion;
-import com.calapaqui.tramites.models.entities.Rol;
-import com.calapaqui.tramites.models.entities.Solicitante;
-import com.calapaqui.tramites.models.entities.Usuario;
-import com.calapaqui.tramites.models.services.DireccionService;
-import com.calapaqui.tramites.models.services.UsuarioService;
 
-import net.bytebuddy.asm.Advice.This;
+import com.calapaqui.tramites.models.entities.Rol;
+import com.calapaqui.tramites.models.entities.Usuario;
+import com.calapaqui.tramites.models.services.UsuarioService;
 
 @Controller
 @RequestMapping(value = "/usuario")
@@ -39,14 +28,9 @@ public class UsuarioController {
 	private UsuarioService service;
 
 	@Autowired
-	private DireccionService srvDireccion;
-
-	@Autowired
 	private BCryptPasswordEncoder encoder;
 
 	private final String TAB_FORM = "formTab";
-	private final String TAB_LIST = "listTab";
-
 	@GetMapping(value = "/create")
 	public String registro(Model model) {
 		Usuario usuario = new Usuario();

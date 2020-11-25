@@ -6,7 +6,7 @@
 
 
 </head>
-<body id="page-top" onload="Cargar()">
+<body id="page-top">
 
 	<div id="wrapper">
 		<ul th:replace="layout :: frgSideBar"></ul>
@@ -24,8 +24,7 @@
 
 					<div class="modal-body col col-sm-6">
 						<form th:action="@{/usuario/postEditUser} "
-							id="changePasswordForm"  method="post"
-							class="form" role="form">
+							id="changePasswordForm" method="post" class="form" role="form">
 							<input class="form-control" type="hidden">
 							<div class="form-group row">
 								<label class="col-lg-3 col-form-label 	form-control-label">Contrase&ntilde;a
@@ -33,8 +32,9 @@
 
 								<div class="col-lg-9">
 									<input class="form-control" type="password"
-										name="currentPassword" id="currentPassword" onkeyup="ValidarContrasenaActual()" maxlength="20">
-									<div class="alert alert-danger" id="lblErrCurrentPassword">La
+										name="currentPassword" id="currentPassword"
+										onkeyup="ValidarContrasenaActual()" maxlength="20">
+									<div class="alert alert-danger d-none" id="lblErrCurrentPassword">La
 										contrase&ntilde;a actual y la ingresada no coinciden</div>
 								</div>
 							</div>
@@ -42,9 +42,10 @@
 								<label class="col-lg-3 col-form-label 	form-control-label">Nueva
 									contrase&ntilde;a </label>
 								<div class="col-lg-9">
-									<input class="form-control" type="password"  name="newPassword"
+									<input class="form-control" type="password" name="newPassword"
 										id="newPassword" onkeyup="ValidarContrasenas()" maxlength="20">
-										<div class="alert alert-danger" id="lblLegthError">La contrase&ntilde;a debe tener al menos 8 caracteres</div>
+									<div class="alert alert-danger d-none" id="lblLegthError">La
+										contrase&ntilde;a debe tener al menos 8 caracteres</div>
 									<!-- <div class="alert-danger">Password</div> -->
 								</div>
 							</div>
@@ -53,10 +54,10 @@
 									la nueva cotrase&ntilde;a </label>
 								<div class="col-lg-9">
 									<input class="form-control" type="password"
-										name="confirmPassword" id="confirmPassword" onkeyup="ValidarContrasenas()" maxlength="20"
-										>
-										
-									<div class="alert-danger" id="lblErrNewPassword">Las
+										name="confirmPassword" id="confirmPassword"
+										onkeyup="ValidarContrasenas()" maxlength="20">
+
+									<div class="alert-danger d-none" id="lblErrNewPassword">Las
 										contrase&ntilde;as no coinciden</div>
 								</div>
 							</div>
@@ -65,7 +66,7 @@
 									id="changePasswordError">Change Password Error</div>
 							</div>
 							<div class="modal-footer col col-sm-6">
-								
+
 								<button type="submit" class="btn btn-primary" id="btnGuardar">Guardar</button>
 							</div>
 
@@ -82,160 +83,9 @@
 
 			<div th:replace="layout :: frgScripts"></div>
 
-<script>
-			var currentPassword; 
-			let boolBtn = false;
-			let boolBtn2 = false;
+			<script th:src="@{/js/usuario/cambiar-contrasena.js}">
 			
-			setInterval(function(){ HabilitarBoton(); }, 1);
-			
-			/*
-				$("#currentPassword").blur(function(){
-					let respGET;
-					
-					currentPassword = document.getElementById("currentPassword").value;
-					
-					CoincidirContrasena(currentPassword).then(function(datosDevueltos){
-						respGET =  datosDevueltos;
-						
-						if(respGET === false){
-							$("#lblErrCurrentPassword").removeClass( "d-none" );
-							boolBtn = false;
-						}else{
-							$("#lblErrCurrentPassword").addClass( "d-none" );
-							boolBtn = true;
-						}
-						 
-						console.log('boolbtn', boolBtn);
-					}, function(errorLanzado){
-					  throw new Error('Error!!', errorLanzado);
-					})
-					.catch(err=> console.log('Error: ', err));
-					
-				});*/
-				
-				function ValidarContrasenaActual(){
-					let respGET;
-					
-					currentPassword = document.getElementById("currentPassword").value;
-					
-					CoincidirContrasena(currentPassword).then(function(datosDevueltos){
-						respGET =  datosDevueltos;
-						
-						if(respGET === false){
-							$("#lblErrCurrentPassword").removeClass( "d-none" );
-							boolBtn = false;
-						}else{
-							$("#lblErrCurrentPassword").addClass( "d-none" );
-							boolBtn = true;
-						}
-						 
-						console.log('boolbtn', boolBtn);
-					}, function(errorLanzado){
-					  throw new Error('Error!!', errorLanzado);
-					})
-					.catch(err=> console.log('Error: ', err));
-				}
-				
-				
-				function ValidarContrasenas(){
-					let newPassword = $("#newPassword").val();
-					let confirmPassword= $("#confirmPassword").val();
-					
-					//let sonInguales = CompararContrasena(newPassword, newPassword);
-					
-					
-					
-					if( newPassword.length > 8  ){
-						//muestra contra min de 8 caracteres	
-						
-						$("#lblLegthError").addClass( "d-none" );
-			
-						if(newPassword === confirmPassword){
-							$("#lblErrNewPassword").addClass( "d-none" );
-							boolBtn2 = true;
-						}else{
-							$("#lblErrNewPassword").removeClass( "d-none" );
-							boolBtn2 = false;
-						}
-						
-					}else{
-						
-						$("#lblLegthError").removeClass( "d-none" );
-						boolBtn2 = false;
-						
-					}
-					
-					console.log('boolBtn2', boolBtn2);
-
-				}
-				
-				
-				function CompararContrasena(nwPass, cfPass){
-					if(nwPass !== cfPass){
-						
-						$("#lblErrNewPassword").removeClass( "d-none" );
-						console.log('No coinciden');
-						return false;	
-					}else{
-						$("#lblErrNewPassword").addClass( "d-none" );
-							//boolBtn2 = true;
-							return true;
-			
-					}
-				}
-				
-		
-			
-		function CoincidirContrasena(currentPassword){
-		
-				return new Promise(function(resolve, reject){
-					$.ajax({
-						url: "/usuario/validCurrentPassword/" + currentPassword +"/",
-						method: 'GET',
-						success: function(response){
-							resolve(response);
-							console.log('Respuesta de la peticion: ',response);
-
-						},
-						error: function(err){
-							reject(err);
-							console.log('Error en la peticion GET');
-							
-						}
-					});
-				})
-				
-			}
-		
-		
-		
-		
-		function HabilitarBoton(){
-			if((boolBtn === true) &&  (boolBtn2 === true)){
-				//$('#btnGuardar').attr("disabled", false);
-				document.getElementById('btnGuardar').disabled = false;
-			}else{
-				document.getElementById('btnGuardar').disabled = true;
-			}
-			
-			
-		}
-		
-		
-			
-			function Cargar(){
-				$("#lblErrCurrentPassword").addClass( "d-none" );
-				$("#lblErrNewPassword").addClass( "d-none" );
-				$("#lblLegthError").addClass( "d-none" );
-				
-				
-				//$("#btnGuardar").attr("disable", true);
-				
-				document.getElementById('btnGuardar').disabled = true;
-			}
-			
-</script>
+			</script>
 		</div>
 
 

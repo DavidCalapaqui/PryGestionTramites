@@ -2,7 +2,6 @@ package com.calapaqui.tramites.models.services;
 
 import java.util.List;
 
-import com.calapaqui.tramites.models.entities.Direccion;
 import com.calapaqui.tramites.models.entities.Unidad;
 
 public interface IUnidadService {

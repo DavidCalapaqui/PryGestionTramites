@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.calapaqui.tramites.models.dao.IUnidad;
-import com.calapaqui.tramites.models.entities.Direccion;
 import com.calapaqui.tramites.models.entities.Unidad;
 
 @Service
@@ -43,10 +42,6 @@ public class UnidadService implements IUnidadService {
 		return (List<Unidad>) dao.findAll();
 	}
 
-	/*@Override
-	@Transactional
-	public List<Unidad> listByDireccion(Direccion d) {
-		return (List<Unidad>) dao.listByDireccion(d);
-	}*/
+
 
 }

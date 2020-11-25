@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
-<head th:replace="layout :: frgHead"></head>
+<head th:replace="layout :: frgHead">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+</head>
 <body id="page-top">
 
 	<div id="wrapper">
@@ -15,19 +17,271 @@
 				<!-- Begin Page Content -->
 				<div class="container-fluid">
 
-					<h1>INDEX</h1>
+					<h1>SISTEMA DE CONTROL DE TR&Aacute;MITES</h1>
+
+					<!-- CARDS-->
+
+					<div class="row">
+						<div class="col-lg-6">
+
+							<div class="card shadow mb-4">
+								<div class="card-header py-3">
+									<h6 class="m-0 font-weight-bold text-primary">Registro de
+										solicitante</h6>
+								</div>
+
+
+								<div class="card-body">
+									<p>Para registrar un nuevo solicitante, debemos seguir los
+										siguientes pasos:</p>
+									<ol>
+										<li><p>
+												Nos dirigimos a la pesta&ntilde;a <b>"Solicitantes"</b> en
+												la opci&oacute;n <b>"Nuevo"</b>.
+											</p></li>
+
+										<li><p>
+												Se mostrar&aacute; un formulario donde deberemos registrar
+												la <b>Identificaci&oacute;n C&eacute;dula/RUC</b> del
+												solicitante y su <b>Nombre</b>
+											</p></li>
+
+										<li>Damos click en <b>Guardar Solicitante</b></li>
+									</ol>
+
+									<p>
+										<b>El sistema arrojar&aacute; un mensaje de error si el
+											solicitante ya se encuentra registrado</b>
+									</p>
+								</div>
+
+							</div>
+
+							<div class="card shadow mb-4">
+								<div class="card-header py-3">
+									<h6 class="m-0 font-weight-bold text-primary">Eliminar/Actualizar
+										solicitante</h6>
+								</div>
+
+
+								<div class="card-body">
+									<p>Para actualizar/eliminar, debemos seguir los siguientes
+										pasos:</p>
+									<ol>
+										<li><p>
+												Nos dirigimos a la pesta&ntilde;a <b>"Solicitantes"</b> en
+												la opci&oacute;n <b>"Lista de solicitantes"</b>.
+											</p></li>
+
+										<li><p>
+												Se mostrar&aacute; una lista de solicitantes registrados,
+												con su informacion y las opciones editar <i
+													class="fas fa-user-edit"></i> y eliminar <i
+													class="fas fa-trash-alt"></i>
+											</p>
+											<ul>
+												<li>En el caso de Eliminar, nos mostrar&aacute; una
+													ventana de confirmaci&oacute;n que nos permitir&aacute;
+													eliminar el solicitante. <b>Si el solicitante tiene
+														tr&aacute;mites asignados no se podr&aacute; eliminar</b>
+
+												</li>
+												<li>En el caso de actualizar, nos dirigir&aacute; al
+													formulario de registro con la informaci&oacute;n del mismo
+													donde podremos actualizarlo y damos click en <b>Guardar
+														Solicitante</b>
+												</li>
+
+											</ul></li>
+									</ol>
+
+								</div>
+
+							</div>
+
+							<div class="card shadow mb-4">
+								<div class="card-header py-3">
+									<h6 class="m-0 font-weight-bold text-primary">Reportes</h6>
+								</div>
+
+
+								<div class="card-body">
+									<p>
+										El sistema genera reportes din&aacute;micos en formato <b>PDF</b>
+										y exporta la informaci&oacute;n de la base de datos en <b>Excel</b>
+									</p>
+									<ul>
+										<li>De una fecha
+											<ol>
+												<li>En la pesta&ntilde;a <b>Reportes</b> nos vamos a la
+													opci&oacute;n <b>De una fecha</b></li>
+												<li>Seleccionamos la fecha que deseamos y le damos
+													click en <b>"Consultar"</b>
+												</li>
+												<li>Si existenten tr&aacute;mites en esa fecha nos
+													mostrar&aacute; una lista, caso contrario un mensaje</li>
+												<li>Seleccionamos el formato en el que queremos
+													exportar el reporte: <b>PDF o Excel</b>
+												</li>
+												<li>Damos click en el bot&oacute;n <b>"Generar
+														Reporte"</b></li>
+											</ol>
+
+										</li>
+										<li>En un rango de fechas
+											<ol>
+												<li>En la pesta&ntilde;a <b>Reportes</b> nos vamos a la
+													opci&oacute;n <b>Rango de Fechas</b></li>
+												<li>Seleccionamos las fechas <b>Desde</b> y <b>Hasta</b>
+													en las que deseamos obtener el reporte y damos click en <b>"Consultar"</b></li>
+												<li>Si existenten tr&aacute;mites entre esas fechas nos
+													mostrar&aacute; una lista, caso contrario un mensaje</li>
+												<li>Seleccionamos el formato en el que queremos
+													exportar el reporte: <b>PDF o Excel</b>
+												</li>
+												<li>Damos click en el bot&oacute;n <b>"Generar
+														Reporte"</b></li>
+
+											</ol>
+										</li>
+
+									</ul>
+									<b>Los reportes se generan en la carpeta <b>ReportesTramites</b>
+										en la carpeta <b>Descargas</b></b>
+
+								</div>
+
+							</div>
+						</div>
+
+						<div class="col-lg-6">
+							<div class="card shadow mb-4">
+								<div class="card-header py-3">
+									<h6 class="m-0 font-weight-bold text-primary">Registro de
+										Tr&aacute;mite</h6>
+								</div>
+								<div class="card-body">
+									<p>Para registrar un nuevo tr&aacute;mite, debemos seguir
+										los siguientes pasos:</p>
+									<ol>
+										<li><p>
+												Nos dirigimos a la pesta&ntilde;a <b>"Tr&aacute;mites"</b>
+												en la opci&oacute;n <b>"Nuevo"</b>
+											</p></li>
+
+										<li><p>
+												Se mostrar&aacute; un formulario donde deberemos buscar por
+												la identificaci&oacute;n el solicitante en el campo <b>Ingrese
+													c&eacute;dula o RUC</b> y damos click en el bot&oacute;n <i
+													class="fas fa-search fa-sm"></i>
+											</p></li>
+
+										<li>Esto nos mostrar&aacute; el nombre del solicitante
+											para comprobar que sea el correcto</li>
+
+										<li>Llenamos el campo <b>Asunto</b></li>
+
+										<li>Presionamos el bot&oacute;n <b>"Choose File"</b> que
+											nos abrir&aacute; el sistema de archivos de nuestra
+											computadora y elegimos el archivo <b>PDF</b> escaneado del
+											tr&aacute;mite a ingresar
+										</li>
+										<li>Presionamos el bot&oacute;n <b>Guardar</b></li>
+									</ol>
+
+									<p>
+										<b>El sistema asignar&aacute; un n&uacute;mero de
+											tr&aacute;mite y la fecha de ingreso tomada del sistema
+											autom&aacute;ticamente</b>
+									</p>
+								</div>
+
+							</div>
+
+							<div class="card shadow mb-4">
+								<div class="card-header py-3">
+									<h6 class="m-0 font-weight-bold text-primary">Eliminar/Actualizar
+										Tr&aacute;mite</h6>
+								</div>
+								<div class="card-body">
+									<p>Para eiminar/actualizar un tr&aacute;mite, debemos
+										seguir los siguientes pasos:</p>
+									<ol>
+										<li><p>
+												Nos dirigimos a la pesta&ntilde;a <b>"Tr&aacute;mites"</b>
+												en la opci&oacute;n <b>"Lista de Tr&aacute;mites"</b>.
+											</p></li>
+
+										<li>Se mostrar&aacute; el listado de los tr&aacute;mites
+											ingresados y las opciones
+											<ul>
+												<li><i class="fas fa-eye"></i>Ver: nos permite
+													visualizar la informaci&oacute;n del tr&aacute;mite</li>
+												<li><i class="fas fa-edit"></i> Actualizar: nos
+													llevar&aacute; al formulario del tr&aacute;mite con la
+													informaci&oacute;n. Aqu&iacute; podremos editar los campos
+													de <b>Solicitante, Asunto, Archivo</b> y tambi&eacute;n los
+													campos de <b>Direcci&oacute;n, Sumilla y Fecha de
+														Sumilla</b> en caso de que el tr&aacute;mite ya ha sido
+													sumillado.</li>
+												<li><i class="fas fa-trash-alt"></i> Eliminar: nos
+													aparecer&aacute; un mensaje de confirmaci&oacute;n para
+													eliminarlo</li>
+
+											</ul>
+										</li>
+									</ol>
+
+									<p>
+										<b>No se puede editar la fecha de ingreso ni el
+											n&uacute;mero de tr&aacute;mite</b>
+									</p>
+								</div>
+
+							</div>
+
+							<div class="card shadow mb-4">
+								<div class="card-header py-3">
+									<h6 class="m-0 font-weight-bold text-primary">Listas</h6>
+								</div>
+								<div class="card-body">
+									<img th:src="@{/img/tutorial/list.png}" class="img-thumbnail"
+										style="width: 600px; height: 130px;"> Las listas de <b>Tr&aacute;mites</b>
+									y <b>Solicitantes</b> cuentan con herramientas que nos ayudan a
+									ordenar los registros de manera ascendente y descendente al dar
+									click en los botones 
+									<img th:src="@{/img/tutorial/sort.png}" class="img-thumbnail"
+										style="width: 30px; height: 30px;">
+										
+									ubicados al lado derecho de el nombre del campo
+									<br>
+									Tambi&eacute;n es posible filtrar uno o varios registros escribiendo en la caja de texto ubicada en la parte superior
+									derecha de la tabla
+								</div>
+							</div>
+							
+							<!-- Basic Card Example -->
+                            <div class="card shadow mb-4">
+                                <div class="card-header py-3">
+                                    <h6 class="m-0 font-weight-bold text-primary">Informaci&oacute;n</h6>
+                                </div>
+                                <div class="card-body">
+                                    Desarrollado por David Calapaqui Bonilla. Pasantias ESPE ISOW PPP-202050
+                                </div>
+                            </div>
+
+						</div>
+					</div>
 				</div>
 				<!-- /.container-fluid -->
 
+				<footer th:replace="layout :: frgFooter"></footer>
+				<div th:replace="layout :: frgScripts"></div>
+
+
 			</div>
 
-			<footer th:replace="layout :: frgFooter"></footer>
 
-			<div th:replace="layout :: frgScripts"></div>
 		</div>
-
-
-	</div>
-
 </body>
 </html>

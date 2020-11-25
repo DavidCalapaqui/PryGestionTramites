@@ -60,6 +60,7 @@
 	<field name="solicitante.identificacion" class="java.lang.String"/>
 	<field name="solicitante.nombre" class="java.lang.String"/>
 	<field name="asunto" class="java.lang.String"/>
+	<field name="respuesta" class="java.lang.String"/>
 	<field name="horaIngreso" class="java.util.Date"/>
 	<field name="fechaIngreso" class="java.util.Calendar"/>
 	<title>
@@ -81,13 +82,13 @@
 				</reportElement>
 			</line>
 			<staticText>
-				<reportElement x="124" y="70" width="152" height="20" uuid="0f86baff-6386-4f3f-b3fe-2388707babe8"/>
+				<reportElement x="285" y="76" width="152" height="20" uuid="0f86baff-6386-4f3f-b3fe-2388707babe8"/>
 				<box rightPadding="4"/>
 				<textElement textAlignment="Left"/>
 				<text><![CDATA[Fecha de generación del reporte:]]></text>
 			</staticText>
-			<textField pattern="EEEEE dd MMMMM yyyy HH:mm">
-				<reportElement x="280" y="70" width="130" height="20" uuid="bb10dbe1-0a4f-4722-9953-c163b63cf979"/>
+			<textField pattern="dd MMM yyyy HH:mm">
+				<reportElement x="441" y="76" width="130" height="20" uuid="bb10dbe1-0a4f-4722-9953-c163b63cf979"/>
 				<textFieldExpression><![CDATA[new java.util.Date()]]></textFieldExpression>
 			</textField>
 			<image hAlign="Center">
@@ -105,27 +106,14 @@
 				<text><![CDATA[GOBIERNO AUTÓNOMO DESCENTRALIZADO MUNICIPAL INTERCULTURAL DEL CANTÓN PUJILÍ]]></text>
 			</staticText>
 			<staticText>
-				<reportElement x="310" y="37" width="90" height="23" uuid="b8cc42fd-b569-497d-834d-7e854040ad18"/>
+				<reportElement x="311" y="40" width="90" height="23" uuid="b8cc42fd-b569-497d-834d-7e854040ad18"/>
 				<textElement>
-					<font size="12" isBold="true"/>
+					<font size="16" isBold="true"/>
 				</textElement>
 				<text><![CDATA[ARCHIVO]]></text>
 			</staticText>
-		</band>
-	</title>
-	<columnHeader>
-		<band height="20">
 			<staticText>
-				<reportElement style="Column header" positionType="Float" x="-3" y="-70" width="111" height="20" forecolor="#000000" uuid="f7c8eeb6-b3ba-4009-ab8c-11c63f81d7c9">
-					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1780c11d-672e-4000-9b60-d4f716aae9e0"/>
-				</reportElement>
-				<textElement>
-					<font fontName="Arial" size="12" isBold="true"/>
-				</textElement>
-				<text><![CDATA[N° Trámite]]></text>
-			</staticText>
-			<staticText>
-				<reportElement style="Column header" positionType="Float" x="86" y="-70" width="111" height="20" forecolor="#000000" uuid="0990a397-d22d-4ca9-bd15-db3826c7ec81">
+				<reportElement style="Column header" positionType="Float" x="33" y="126" width="86" height="20" forecolor="#000000" uuid="0990a397-d22d-4ca9-bd15-db3826c7ec81">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7bc4e2af-5fad-4c04-b177-f40772615bad"/>
 				</reportElement>
 				<textElement>
@@ -133,8 +121,21 @@
 				</textElement>
 				<text><![CDATA[ID. Solicitante	]]></text>
 			</staticText>
+		</band>
+	</title>
+	<columnHeader>
+		<band height="20">
 			<staticText>
-				<reportElement style="Column header" positionType="Float" x="199" y="-70" width="111" height="20" forecolor="#000000" uuid="8245c2be-e825-482f-becf-4386db6941e6">
+				<reportElement style="Column header" positionType="Float" x="-10" y="-70" width="43" height="20" forecolor="#000000" uuid="f7c8eeb6-b3ba-4009-ab8c-11c63f81d7c9">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1780c11d-672e-4000-9b60-d4f716aae9e0"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true" isItalic="false"/>
+				</textElement>
+				<text><![CDATA[N° ]]></text>
+			</staticText>
+			<staticText>
+				<reportElement style="Column header" positionType="Float" x="118" y="-70" width="111" height="20" forecolor="#000000" uuid="8245c2be-e825-482f-becf-4386db6941e6">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="918a1ea9-696c-415d-a686-79480fd5098d"/>
 				</reportElement>
 				<textElement>
@@ -143,7 +144,7 @@
 				<text><![CDATA[Nombre Solicitante]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" positionType="Float" x="312" y="-70" width="111" height="20" forecolor="#000000" uuid="c4dc6416-b91e-4bf1-9681-6dc9f2e6828c">
+				<reportElement style="Column header" positionType="Float" x="240" y="-70" width="45" height="20" forecolor="#000000" uuid="c4dc6416-b91e-4bf1-9681-6dc9f2e6828c">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a34852ca-4f58-42e4-b212-d2d98db737ab"/>
 				</reportElement>
 				<textElement>
@@ -152,7 +153,7 @@
 				<text><![CDATA[Asunto]]></text>
 			</staticText>
 			<staticText>
-				<reportElement style="Column header" positionType="Float" x="423" y="-70" width="133" height="20" forecolor="#000000" uuid="89400ccb-6507-46a6-8d44-5c4f2666fe10">
+				<reportElement style="Column header" positionType="Float" x="454" y="-70" width="117" height="20" forecolor="#000000" uuid="89400ccb-6507-46a6-8d44-5c4f2666fe10">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a6ca61d8-6f74-4b3a-aba7-a0800c83bbd0"/>
 				</reportElement>
 				<textElement>
@@ -160,54 +161,72 @@
 				</textElement>
 				<text><![CDATA[Fecha-Hora Ingreso]]></text>
 			</staticText>
+			<staticText>
+				<reportElement style="Column header" positionType="Float" x="346" y="-70" width="52" height="20" forecolor="#000000" uuid="e9a820ca-e51d-4035-8d04-bb12cff256a9">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a34852ca-4f58-42e4-b212-d2d98db737ab"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<text><![CDATA[Sumilla]]></text>
+			</staticText>
 		</band>
 	</columnHeader>
 	<detail>
 		<band height="20">
 			<textField isBlankWhenNull="true">
-				<reportElement style="Detail" positionType="Float" x="-3" y="-70" width="111" height="20" uuid="1b27e5eb-b957-4f7f-8970-532678251aa4">
+				<reportElement style="Detail" positionType="Float" x="-9" y="-70" width="42" height="20" uuid="1b27e5eb-b957-4f7f-8970-532678251aa4">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="1780c11d-672e-4000-9b60-d4f716aae9e0"/>
 				</reportElement>
 				<textElement>
-					<font fontName="Arial" size="12" isBold="false"/>
+					<font fontName="Arial" size="10" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{idTramite}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement style="Detail" positionType="Float" x="86" y="-70" width="111" height="20" uuid="887b13a5-0303-4e59-b070-ec2c5761ffe6">
+				<reportElement style="Detail" positionType="Float" x="33" y="-70" width="86" height="20" uuid="887b13a5-0303-4e59-b070-ec2c5761ffe6">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="7bc4e2af-5fad-4c04-b177-f40772615bad"/>
 				</reportElement>
 				<textElement>
-					<font fontName="Arial" size="12" isBold="false"/>
+					<font fontName="Arial" size="10" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{solicitante.identificacion}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement style="Detail" positionType="Float" x="200" y="-70" width="111" height="20" uuid="a2206a2f-821b-4960-9bcf-0ac43240c0a0">
+				<reportElement style="Detail" positionType="Float" x="119" y="-70" width="118" height="20" uuid="a2206a2f-821b-4960-9bcf-0ac43240c0a0">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="918a1ea9-696c-415d-a686-79480fd5098d"/>
 				</reportElement>
 				<textElement>
-					<font fontName="Arial" size="12" isBold="false"/>
+					<font fontName="Arial" size="10" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{solicitante.nombre}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement style="Detail" positionType="Float" x="312" y="-70" width="111" height="20" uuid="9eea434f-9388-4344-aa77-c4c947e6e6b2">
+				<reportElement style="Detail" positionType="Float" x="239" y="-70" width="102" height="20" uuid="9eea434f-9388-4344-aa77-c4c947e6e6b2">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a34852ca-4f58-42e4-b212-d2d98db737ab"/>
 				</reportElement>
 				<textElement>
-					<font fontName="Arial" size="12" isBold="false"/>
+					<font fontName="Arial" size="10" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{asunto}]]></textFieldExpression>
 			</textField>
-			<textField pattern="dd/MM/yyyy" isBlankWhenNull="true">
-				<reportElement style="Detail" positionType="Float" x="423" y="-70" width="152" height="20" uuid="89032c84-bed9-4586-9391-ae82244b53bc">
+			<textField pattern="EEEEE dd MMM yyyy" isBlankWhenNull="true">
+				<reportElement style="Detail" positionType="Float" x="454" y="-70" width="106" height="20" uuid="89032c84-bed9-4586-9391-ae82244b53bc">
 					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a6ca61d8-6f74-4b3a-aba7-a0800c83bbd0"/>
 				</reportElement>
 				<textElement>
-					<font fontName="Arial" size="12" isBold="false"/>
+					<font fontName="Arial" size="10" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{fechaIngreso}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[new SimpleDateFormat("dd MMM yyyy").format($F{fechaIngreso}.getTime()) + "-" + $F{horaIngreso}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="false">
+				<reportElement style="Detail" positionType="Float" x="345" y="-70" width="104" height="20" uuid="269fa585-3fd6-4726-bf56-fbb4e188066e">
+					<property name="com.jaspersoft.studio.spreadsheet.connectionID" value="a34852ca-4f58-42e4-b212-d2d98db737ab"/>
+				</reportElement>
+				<textElement>
+					<font fontName="Arial" size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{respuesta}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

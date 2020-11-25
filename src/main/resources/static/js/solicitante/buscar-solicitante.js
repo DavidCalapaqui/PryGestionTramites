@@ -31,9 +31,6 @@ function searchByIdentificacion(){
 	});
 }
 
-function ValidarSubmit(){
-	
-}
 
 function searchOneByIdentificacion(){
 	var criteria = $("#txtIdentificacion").val(); 
@@ -80,36 +77,7 @@ function searchOneByIdentificacion(){
 	}
 	
 	
-	
-	
-	/*$.ajax({
-		url: "/solicitante/searchOne/" + criteria+"/",
-		method: 'GET',
-		success : function(response){
-			
-			if(!response){
-				$("#txtNombreSol").val('No existe este solicitante.');
-			}
-			
-			console.log(response);
-			
-			var id = response.idSolicitante.toString();
-			var nombre = response.nombre;
-			console.log(id);
-			console.log(nombre);
-			
-			$("#txtSol").val(id);
-			$("#txtNombreSol").val(nombre);
-			
-			
-		},
-		error : function(err){
-			console.error(err);
-			console.error(err.responseText);
-			 throw new Error('Error!!', errorLanzado);
-		}
-		
-	});*/
+
 }
 
 function CargarDatosToUpdate(){
@@ -128,12 +96,14 @@ function CargarDatosToUpdate(){
 					var asunto = response.asunto;
 					var idSol = response.solicitante.idSolicitante;
 					var doc = response.documento;
+					var res = response.respuesta;
 					
 					$("#txtIdentificacion").val(identificacion);
 					$("#txtNombreSol").val(nombreSol);
 					$("#txtAsunto").val(asunto);
 					$("#txtSol").val(idSol);
 					$("#auxFile").val(doc);
+					$("#txtSumilla").val(res);
 					
 				},
 				error : function(err){
@@ -179,20 +149,6 @@ function CargarDatosToAssign(){
 	
 }
 
-function ValidarSubmit(){
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	return true
-}
 
 $(document).ready(CargarDatosToUpdate());
 

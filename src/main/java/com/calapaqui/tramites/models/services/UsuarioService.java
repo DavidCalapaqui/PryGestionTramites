@@ -14,7 +14,7 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.calapaqui.tramites.dto.ChangePasswordForm;
+
 import com.calapaqui.tramites.models.dao.IUsuario;
 import com.calapaqui.tramites.models.entities.Rol;
 import com.calapaqui.tramites.models.entities.Usuario;
@@ -98,29 +98,5 @@ public class UsuarioService implements UserDetailsService {
 		//to.setEmail(from.getEmail());
 		to.setRoles(from.getRoles());
 	}
-	public Usuario changePassword(ChangePasswordForm form) throws Exception {
-		
-		Usuario storedUser = ObtenerUsuarioEnSesion();
-		//.orElseThrow(() -> new Exception("UsernotFound in ChangePassword -" + this.getClass().getName()));
-
-		if(storedUser == null) {
-			System.out.println("UsernotFound in ChangePassword -" + this.getClass().getName());
-		}
-		
-		
-		if (form.getCurrentPassword().equals(storedUser.getPassword())) {
-			throw new Exception("Current Password Incorrect.");
-		}
-
-		if (form.getCurrentPassword().equals(form.getNewPassword())) {
-			throw new Exception("New Password must be different than Current Password!");
-		}
-
-		if (!form.getNewPassword().equals(form.getConfirmPassword())) {
-			throw new Exception("New Password and Confirm Password does not match!");
-		}
-
-		storedUser.setPassword(form.getNewPassword());
-		return dao.save(storedUser);
-	}
+	
 }

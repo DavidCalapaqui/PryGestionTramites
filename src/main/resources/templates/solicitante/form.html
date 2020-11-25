@@ -31,7 +31,7 @@
 
 						</div>
 						  <div class="alert alert-danger d-none" id="lblErrId">
-							Identificaci&oacute;n incorrecta
+							Identificaci&oacute;n incorrecta. Debe tener 10 o 13 n&uacute;meros
 						</div>
 						
 								
@@ -65,8 +65,10 @@
 
 				function ValidarIdentificacion() {
 					let identificacion = $("#txtId").val();
+					identificacion.trim();
 					if (identificacion.length === 10
 							|| identificacion.length === 13) {
+						
 						$("#lblErrId").addClass("d-none");
 					} else {
 						$("#lblErrId").removeClass("d-none");

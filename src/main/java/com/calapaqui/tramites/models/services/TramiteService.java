@@ -6,20 +6,17 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.calapaqui.tramites.models.dao.IDireccion;
 import com.calapaqui.tramites.models.dao.ITramite;
 
 import com.calapaqui.tramites.models.entities.Direccion;
@@ -110,10 +107,7 @@ public class TramiteService implements ITramiteService{
 	public List<Tramite> reporteEntreFechas(Date desde, Date hasta) {
 		List<Tramite> rangoTramites = new ArrayList<Tramite>();
 		List<Tramite> allTramites = (List<Tramite>)dao.findAll();
-		
-		SimpleDateFormat sdf = new SimpleDateFormat("dd/MMM/yyyy");
-		String strDesde = sdf.format(desde);
-		String strHasta = sdf.format(hasta);
+			
 		
 		for(Tramite t: allTramites) {
 			
