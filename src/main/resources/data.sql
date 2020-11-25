@@ -1,4 +1,4 @@
-insert into usuarios (habilitado, nombre, password) values(1, 'dirArchivo', '$2a$10$/q6FGfP50cILXrSuN7DiLOdTuaPcOhBdlFC4yc/iRlNJyVQCXW.Iy')
+insert into usuarios (habilitado, nombre, password) values('1', 'dirArchivo', '$2a$10$/q6FGfP50cILXrSuN7DiLOdTuaPcOhBdlFC4yc/iRlNJyVQCXW.Iy')
 
 insert into roles (nombre) values('ROLE_ARCH')
 
