@@ -17,6 +17,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.validation.annotation.Validated;
 
 import java.util.Date;
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -26,8 +27,11 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.List;
 
+
+import javax.servlet.http.HttpServletResponse;
+
 import com.calapaqui.tramites.models.services.IDireccionService;
-import com.calapaqui.tramites.models.services.IRespuestaService;
+
 import com.calapaqui.tramites.models.services.ISolicitanteService;
 import com.calapaqui.tramites.models.services.ITramiteService;
 import com.calapaqui.tramites.models.services.IUnidadService;
@@ -266,10 +270,23 @@ public class TramiteController {
 
 	}
 
+//	@GetMapping(value = "/retrieve/{id}")
+//	public String Retrieve(@PathVariable(value = "id") Integer id, Model model) {
+//		Tramite tramite = this.srvTramite.findById(id);
+//		model.addAttribute("tramite", tramite);
+//
+//		return "tramite/retrieve";
+//	}
+	
 	@GetMapping(value = "/retrieve/{id}")
 	public String Retrieve(@PathVariable(value = "id") Integer id, Model model) {
 		Tramite tramite = this.srvTramite.findById(id);
+		String usrName = System.getProperty("user.name");
+		File carpetaArchivos = new File("C:\\Users\\" + usrName + "\\Downloads\\ArchivosPDF");
 		model.addAttribute("tramite", tramite);
+		model.addAttribute("ruta", carpetaArchivos.toString()+"\\");
+		
+		
 
 		return "tramite/retrieve";
 	}
@@ -318,6 +335,52 @@ public class TramiteController {
 		return usuario;
 	}
 
+//	@PostMapping(value = "/save")
+//	public String Save(@Validated Tramite tramite, BindingResult result, Model model,
+//			@RequestParam("file") MultipartFile file, String txtAsunto,String txtSumilla, String txtSol, String auxFile,
+//			RedirectAttributes flash) {
+//
+//		// Hora y fecha del sistema
+//		Calendar fechaSistema = Calendar.getInstance();
+//		java.util.Date horaSistema = Calendar.getInstance().getTime();
+//
+//		// id del soicitante
+//		Integer idSoli = Integer.valueOf(txtSol);
+//		Solicitante soli = this.srvSolicitente.findById(idSoli);
+//		
+//		
+//		// se está creando un nuevo
+//		if (tramite.getIdTramite() == null) {
+//			tramite.setFechaIngreso(fechaSistema);
+//			tramite.setHoraIngreso(horaSistema);
+//			tramite.setAsunto(txtAsunto);
+//			tramite.setSolicitante(soli);
+//			tramite.setDocumento(this.srvTramite.CargarArchivo(file));
+//			this.srvTramite.Save(tramite);
+//			
+//			flash.addFlashAttribute("success","Tramite registrado exitosamente");
+//
+//		} else {
+//			// se está actualizando
+//			Tramite tramiteBD = this.srvTramite.findById(tramite.getIdTramite());
+//			tramite.setFechaIngreso(tramiteBD.getFechaIngreso());
+//			tramite.setHoraIngreso(tramiteBD.getHoraIngreso());
+//			tramite.setAsunto(txtAsunto);
+//			tramite.setRespuesta(txtSumilla);;
+//			tramite.setSolicitante(soli);
+//			if (!file.isEmpty()) {
+//				tramite.setDocumento(this.srvTramite.CargarArchivo(file));
+//			}else {
+//				tramite.setDocumento(auxFile);
+//			}
+//			this.srvTramite.Save(tramite);
+//			flash.addFlashAttribute("success","Tramite actualizado exitosamente");
+//		}
+//
+//
+//		return "redirect:/tramite/list";
+//	}
+	
 	@PostMapping(value = "/save")
 	public String Save(@Validated Tramite tramite, BindingResult result, Model model,
 			@RequestParam("file") MultipartFile file, String txtAsunto,String txtSumilla, String txtSol, String auxFile,
@@ -338,7 +401,7 @@ public class TramiteController {
 			tramite.setHoraIngreso(horaSistema);
 			tramite.setAsunto(txtAsunto);
 			tramite.setSolicitante(soli);
-			tramite.setDocumento(this.srvTramite.CargarArchivo(file));
+			tramite.setDoc(this.srvTramite.CargarArchivo(file));
 			this.srvTramite.Save(tramite);
 			
 			flash.addFlashAttribute("success","Tramite registrado exitosamente");
@@ -352,9 +415,10 @@ public class TramiteController {
 			tramite.setRespuesta(txtSumilla);;
 			tramite.setSolicitante(soli);
 			if (!file.isEmpty()) {
-				tramite.setDocumento(this.srvTramite.CargarArchivo(file));
-			}else {
-				tramite.setDocumento(auxFile);
+				tramite.setDoc(this.srvTramite.CargarArchivo(file));
+			}
+			else {
+				tramite.setDoc(tramiteBD.getDoc());
 			}
 			this.srvTramite.Save(tramite);
 			flash.addFlashAttribute("success","Tramite actualizado exitosamente");
@@ -363,6 +427,10 @@ public class TramiteController {
 
 		return "redirect:/tramite/list";
 	}
+	
+	
+	
+	
 
 	// =======  REPORTES ================
 
@@ -423,7 +491,12 @@ public class TramiteController {
 
 		return this.srvTramite.reporteEntreFechas(desdeDate, hastaDate);
 	}
-
+	
+	@GetMapping(value="/showPDF/{idTramite}")
+	public void getPDFFile(@PathVariable Integer idTramite, HttpServletResponse response) {
+		System.out.println("Llego al controlador");
+		this.srvTramite.writePDFToResponse(idTramite, response);
+	}
 }
 
 

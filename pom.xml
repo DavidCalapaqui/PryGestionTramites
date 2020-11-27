@@ -12,6 +12,7 @@
 	<groupId>com.calapaqui.prytramites</groupId>
 	<artifactId>PryTramites</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
+	<packaging>jar</packaging>
 	<name>PryGestionTramites</name>
 	<description>Proyecto de gestion de Tramites Municipio Pujili</description>
 

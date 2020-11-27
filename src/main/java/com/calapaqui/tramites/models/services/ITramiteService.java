@@ -3,6 +3,10 @@ package com.calapaqui.tramites.models.services;
 import java.util.Date;
 import java.util.List;
 
+import javax.servlet.ServletRequest;
+import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.web.multipart.MultipartFile;
 
 import com.calapaqui.tramites.models.entities.Direccion;
@@ -21,7 +25,9 @@ public interface ITramiteService {
 	public List<Tramite> findByUnidad(Unidad u);
 	public List<Tramite> reporteFecha(Date fecha );
 	public List<Tramite> reporteEntreFechas(Date desde, Date hasta);
-	public String CargarArchivo(MultipartFile file);
+	public byte[] CargarArchivo(MultipartFile file);
+	public void writePDFToResponse(Integer id, HttpServletResponse response);
+	
 
 	
 }

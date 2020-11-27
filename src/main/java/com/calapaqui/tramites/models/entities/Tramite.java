@@ -12,12 +12,14 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import org.springframework.format.annotation.DateTimeFormat;
+
 
 @Entity
 @Table(name = "tramites")
@@ -35,7 +37,7 @@ public class Tramite implements Serializable {
 
 	@Column(name = "documento")
 	private String documento;
-	
+
 	@Column(name = "respuesta")
 	private String respuesta;
 
@@ -49,7 +51,7 @@ public class Tramite implements Serializable {
 	@Temporal(TemporalType.TIME)
 	@DateTimeFormat(pattern = "HH:mm")
 	private Date horaIngreso;
-	//@DateTimeFormat(pattern = "yyyy-MM-dd ")
+	// @DateTimeFormat(pattern = "yyyy-MM-dd ")
 	// fecha y hora ingreso a direccion
 	@Column(name = "fecha_ingreso_direccion")
 	@Temporal(TemporalType.DATE)
@@ -71,7 +73,12 @@ public class Tramite implements Serializable {
 	@Temporal(TemporalType.TIME)
 	@DateTimeFormat(pattern = "HH:mm")
 	private Date horaIngresoUnidad;
-
+	
+	@Lob 
+	@Column(name = "doc", length=100000)
+	private byte[] doc;
+	
+	
 	@JoinColumn(name = "fk_solicitante", referencedColumnName = "pk_solicitante")
 	@OneToOne
 	private Solicitante solicitante;
@@ -83,9 +90,6 @@ public class Tramite implements Serializable {
 	@JoinColumn(name = "fk_unidad", referencedColumnName = "pk_unidad")
 	@OneToOne
 	private Unidad unidad;
-
-	
-
 
 	public Tramite() {
 		super();
@@ -143,10 +147,6 @@ public class Tramite implements Serializable {
 	public void setDireccion(Direccion direccion) {
 		this.direccion = direccion;
 	}
-	
-	
-
-
 
 	public String getRespuesta() {
 		return respuesta;
@@ -203,6 +203,16 @@ public class Tramite implements Serializable {
 	public void setHoraIngresoUnidad(Date horaIngresoUnidad) {
 		this.horaIngresoUnidad = horaIngresoUnidad;
 	}
+	
+	
+	public byte[] getDoc() {
+		return doc;
+	}
+
+	public void setDoc(byte[] doc) {
+		this.doc = doc;
+	}
+	
 
 	public String obtenerFechaIngreso() {
 		SimpleDateFormat sdfFecha = new SimpleDateFormat("dd/MMM/yyyy");

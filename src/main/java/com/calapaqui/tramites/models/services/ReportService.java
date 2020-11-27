@@ -1,5 +1,6 @@
 package com.calapaqui.tramites.models.services;
 
+import java.awt.Component;
 import java.io.File;
 import java.io.FileNotFoundException;
 
@@ -9,6 +10,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import javax.swing.JFileChooser;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -36,32 +39,37 @@ public class ReportService {
 
 	// REPORTE UNA FECHA
 	public String exportReport(String reportFormat, String fecha) throws FileNotFoundException, JRException {
-		
-		
+//		JFileChooser chooser = new JFileChooser();
+//		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+//		chooser.showOpenDialog(this);
+//		
+//		File path = chooser.getCurrentDirectory();
+//		
 		File file;
 		JasperReport jasperReport;
-		
-		
-		SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
-		Date fechaDate = null;
-		try {
-			fechaDate = formato.parse(fecha);
-		} catch (ParseException ex) {
-			System.out.println(ex);
-		}
+		String usrName = System.getProperty("user.name");
 
-		List<Tramite> tramites = srvTramite.reporteFecha(fechaDate);
-		JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(tramites);
-		
-		
-		
+		// aqui el metodo de obtener la data
+		JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(this.GetDataUnaFecha(fecha));
+
 		Map<String, Object> parameters = new HashMap<>();
 		parameters.put("createdBy", "David Calapaqui");
 
-	
 		switch (reportFormat) {
+
+		case "pdf": {
+			file = ResourceUtils.getFile("C:\\PlantillasReportes\\reporteUnaFecha.jrxml");
+			jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
+			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+			JasperExportManager.exportReportToPdfFile(jasperPrint,
+					ObtenerOCrearDirectorio() + "\\reporte_" + fecha + ".pdf");
+		}
+			break;
+
 		case "excel": {
-			file = ResourceUtils.getFile("src//main//resources//templates//reportes//reporteExcel.jrxml");
+			// file =
+			// ResourceUtils.getFile("src//main//resources//templates//reportes//reporteExcel.jrxml");
+			file = ResourceUtils.getFile("C:\\PlantillasReportes\\reporteExcel.jrxml");
 			jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
 			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
 			JRXlsxExporter exporter = new JRXlsxExporter();
@@ -75,21 +83,13 @@ public class ReportService {
 			configuration.setRemoveEmptySpaceBetweenColumns(true);
 			configuration.setRemoveEmptySpaceBetweenRows(true);
 			configuration.setMaxRowsPerSheet(100);
-			
-			exporter.setConfiguration(configuration);
-			
-			exporter.exportReport();
-			
-			
-		}break;
 
-		case "pdf": {
-			file = ResourceUtils.getFile("src//main//resources//templates//reportes//reporteUnaFecha.jrxml");	
-			jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
-			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
-			JasperExportManager.exportReportToPdfFile(jasperPrint,
-					ObtenerOCrearDirectorio() + "\\reporte_" + fecha + ".pdf");
-		}break;
+			exporter.setConfiguration(configuration);
+
+			exporter.exportReport();
+
+		}
+			break;
 
 		}
 		return "Reporte generado en: " + ObtenerOCrearDirectorio();
@@ -100,7 +100,71 @@ public class ReportService {
 			throws FileNotFoundException, JRException {
 		File file;
 		JasperReport jasperReport;
+
+		// aqui la obtencion de la data
+		JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(this.GetDataDosFechas(desde, hasta));
+
+		Map<String, Object> parameters = new HashMap<>();
+		parameters.put("createdBy", "David Calapaqui");
+
+		switch (reportFormat) {
 		
+		case "pdf": {
+			file = ResourceUtils.getFile("C:\\PlantillasReportes\\reporteEntreFechas.jrxml");
+			jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
+			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+			JasperExportManager.exportReportToPdfFile(jasperPrint,
+					ObtenerOCrearDirectorio() + "\\reporte_desde_" + desde + "_hasta_" + hasta + ".pdf");
+		}
+			break;
+		case "excel": {
+			file = ResourceUtils.getFile("C:\\PlantillasReportes\\reporteExcel.jrxml");
+			jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
+			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
+			JRXlsxExporter exporter = new JRXlsxExporter();
+			exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
+			File outputFile = new File(ObtenerOCrearDirectorio() + "\\reporte_" + desde + "_hasta_" + hasta + ".xlsx");
+			exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(outputFile));
+
+			SimpleXlsxReportConfiguration configuration = new SimpleXlsxReportConfiguration();
+			configuration.setDetectCellType(true);// Set configuration as you like it!!
+			configuration.setCollapseRowSpan(false);
+			configuration.setRemoveEmptySpaceBetweenColumns(true);
+			configuration.setRemoveEmptySpaceBetweenRows(true);
+			configuration.setMaxRowsPerSheet(100);
+			exporter.setConfiguration(configuration);
+
+			exporter.exportReport();
+
+		}
+			break;
+
+		
+
+		}
+		return "Reporte generado en: " + ObtenerOCrearDirectorio();
+
+	}
+
+	// OBTIENE LA CARPETA /ESCRITORIO/REPORTES y si no existe la crea y retorna el
+	// path
+	public String ObtenerOCrearDirectorio() {
+
+//		JFileChooser chooser = new JFileChooser();
+//		chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+//		File path = chooser.getCurrentDirectory();
+
+		String usrName = System.getProperty("user.name");
+		File dskReport = new File("C:\\Users\\" + usrName + "\\Downloads\\ReportesTramites");
+
+		if (!dskReport.canExecute()) {
+			dskReport.mkdir();
+		}
+
+		return dskReport.getAbsolutePath();
+	}
+
+	public List<Tramite> GetDataDosFechas(String desde, String hasta) {
 		SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
 		Date desdeDate = null;
 		Date hastaDate = null;
@@ -111,57 +175,23 @@ public class ReportService {
 			System.out.println(ex);
 		}
 		List<Tramite> tramitesEntreFechas = srvTramite.reporteEntreFechas(desdeDate, hastaDate);
-		JRBeanCollectionDataSource dataSource = new JRBeanCollectionDataSource(tramitesEntreFechas);
-		
-		Map<String, Object> parameters = new HashMap<>();
-		parameters.put("createdBy", "David Calapaqui");
-		
-		switch (reportFormat) {
-		case "excel": {
-			file = ResourceUtils.getFile("src//main//resources//templates//reportes//reporteExcel.jrxml");
-			jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
-			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
-			JRXlsxExporter exporter = new JRXlsxExporter();
-			exporter.setExporterInput(new SimpleExporterInput(jasperPrint));
-			File outputFile = new File(ObtenerOCrearDirectorio() + "\\reporte_"+desde+"_hasta_"+hasta+".xlsx");
-			exporter.setExporterOutput(new SimpleOutputStreamExporterOutput(outputFile));
 
-			SimpleXlsxReportConfiguration configuration = new SimpleXlsxReportConfiguration();
-			configuration.setDetectCellType(true);// Set configuration as you like it!!
-			configuration.setCollapseRowSpan(false);
-			configuration.setRemoveEmptySpaceBetweenColumns(true);
-			configuration.setRemoveEmptySpaceBetweenRows(true);
-			configuration.setMaxRowsPerSheet(100);
-			exporter.setConfiguration(configuration);
-			
-			exporter.exportReport();
-			
-			
-		}break;
-
-		case "pdf": {
-			file = ResourceUtils.getFile("src//main//resources//templates//reportes//reporteEntreFechas.jrxml");	
-			jasperReport = JasperCompileManager.compileReport(file.getAbsolutePath());
-			JasperPrint jasperPrint = JasperFillManager.fillReport(jasperReport, parameters, dataSource);
-			JasperExportManager.exportReportToPdfFile(jasperPrint,
-					ObtenerOCrearDirectorio() + "\\reporte_desde_" + desde+"_hasta_"+hasta+".pdf");
-		}break;
-
-		}
-		return "Reporte generado en: " + ObtenerOCrearDirectorio();
-	
+		return tramitesEntreFechas;
 	}
 
-	// OBTIENE LA CARPETA /ESCRITORIO/REPORTES y si no existe la crea y retorna el
-	// path
-	public String ObtenerOCrearDirectorio() {
-		String usrName = System.getProperty("user.name");
-		File dskReport = new File("C:\\Users\\" + usrName + "\\Downloads\\ReportesTramites");
-
-		if (!dskReport.canExecute()) {
-			dskReport.mkdir();
+	public List<Tramite> GetDataUnaFecha(String fecha) {
+		SimpleDateFormat formato = new SimpleDateFormat("yyyy-MM-dd");
+		Date fechaDate = null;
+		try {
+			fechaDate = formato.parse(fecha);
+		} catch (ParseException ex) {
+			System.out.println(ex);
 		}
-		return dskReport.getAbsolutePath();
+
+		List<Tramite> tramites = srvTramite.reporteFecha(fechaDate);
+
+		return tramites;
+
 	}
 
 }
