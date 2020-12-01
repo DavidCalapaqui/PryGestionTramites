@@ -12,7 +12,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 @Controller
 @RequestMapping(value="/")  
 public class MainController {
-
+	
+	//retorna la pagina principal 
 	@GetMapping(value= {"/","/index.html"})
 	public String index(Model model) {
 		//El retorno indica la vista que se va a desplegar
@@ -20,6 +21,7 @@ public class MainController {
 		return "index";
 	}
 	
+	//retorna la pagina con el formulario de login
 	@GetMapping(value="/login")
 	public String login(@RequestParam(value="error", required=false) String error, 
 			Model model, Principal principal, RedirectAttributes flash) {

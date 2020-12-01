@@ -91,16 +91,17 @@ public class TramiteService implements ITramiteService{
 
 	@Override
 	public List<Tramite> reporteFecha(Date fecha) {
+		//retorn la lista de los tramites ingresados en una fecha
 		List<Tramite> tramitePorFecha = new ArrayList<Tramite>();
 		List<Tramite> allTramites = (List<Tramite>)dao.findAll();
 		
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MMM/yyyy");
 		String fechaAConsultar = sdf.format(fecha);
-		
+		//recorre todos los registros de la BD
 		for(Tramite t: allTramites) {
 			
 			String fechaDB = sdf.format(t.getFechaIngreso().getTime());
-			
+			//coinciden las fechas a consultar se agrega el tramite a la lista tramitePorFecha
 			if(fechaDB.equals(fechaAConsultar)) {
 				
 				tramitePorFecha.add(t);
@@ -116,9 +117,9 @@ public class TramiteService implements ITramiteService{
 		List<Tramite> rangoTramites = new ArrayList<Tramite>();
 		List<Tramite> allTramites = (List<Tramite>)dao.findAll();
 			
-		
+		//recorre todos los tramites de la BD
 		for(Tramite t: allTramites) {
-			
+			//compara si las un tramite de todos los registros se encuentran entre el rango y se agrega a la lista rangoTramites 
 			if(		(desde.before(t.getFechaIngreso().getTime()) || desde.equals(t.getFechaIngreso().getTime())) 
 																&& 
 					(hasta.after(t.getFechaIngreso().getTime()) || hasta.equals(t.getFechaIngreso().getTime())) ) {
@@ -148,7 +149,7 @@ public class TramiteService implements ITramiteService{
 //		
 //		return file.getOriginalFilename();
 //	}
-	
+	//recibe el multipartfile que llega del front, obtiene los bytes del documento y los retorna
 	@Override
 	@Transactional
 	public byte[] CargarArchivo(MultipartFile file) {
@@ -173,33 +174,31 @@ public class TramiteService implements ITramiteService{
 		
 		return bytes;
 	}
-
+	
+	//esta funcion muestra el archivo pdf en la misma ventana utilizando el response del servidor
 	@Override
 	public void writePDFToResponse(Integer id, HttpServletResponse response) {
 		response.setContentType("application/pdf");
 		response.setHeader("Cache-Control", "max-age=2628000");
 		
 		
-		
+		//obtiene los bytes del archivo de la bbdd
 		byte[] pdf = dao.findById(id).get().getDoc();
+		//esta variable no se utiliza peroporsiacaso :v
 		String strPDF = Base64.getEncoder().encodeToString(pdf);
 		
 		try {
-//			OutputStream out = response.getOutputStream();
-//			out.write(pdf);
-//			out.flush();
-//			out.close();
+
+			//limpia el outputstream
 			response.getOutputStream().flush();
 			InputStream bos = new ByteArrayInputStream(pdf);
 			int tamanoInput = bos.available();
 			byte[] datosPDF = new byte[tamanoInput];
 			bos.read(datosPDF,0,tamanoInput);
+			//escribe el pdf en la salida
 			response.getOutputStream().write(datosPDF);
 			response.getOutputStream().flush();
-			//response.getOutputStream().close();
-		
 			
-			//bos.reset();
 			bos.close();
 			
 		}
@@ -207,14 +206,7 @@ public class TramiteService implements ITramiteService{
 			System.out.println(ex.getMessage());
 		}
 		
-//		try {
-//			response.getOutputStream().flush();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			System.out.println(e.getMessage());
-//		}
-//		
-//		
+
 		
 	}
 	

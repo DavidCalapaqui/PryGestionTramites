@@ -18,6 +18,7 @@ public class DireccionController {
 	@Autowired
 	private IDireccionService srvDireccion;
 	
+	//devuelve la lista de direcciones de la BBDD
 	@GetMapping(value="list")
 	public @ResponseBody List<Direccion> list(){
 		return srvDireccion.FindAll();

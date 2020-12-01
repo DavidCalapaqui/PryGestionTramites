@@ -62,6 +62,7 @@ public class TramiteController {
 	@Autowired
 	private UsuarioService srvUsuario;
 
+	//retorna el formulario de registro de tramite
 	@GetMapping(value = "/create")
 	public String Create(Model model) {
 		Tramite tramite = new Tramite();
@@ -74,6 +75,7 @@ public class TramiteController {
 		return "tramite/form";
 	}
 
+	//retorna la vista con la lista de los tramites ingresado
 	@GetMapping(value = "/list")
 	public String List(Model model) {
 
@@ -83,6 +85,7 @@ public class TramiteController {
 		return "tramite/list";
 	}
 
+	//lista los tramites ingresados segun el usuario que está en sesion. Esto es en la app completa que se puede redireccionar los tramites 
 	@GetMapping(value = "/listByDireccion")
 	public String ListByDireccion(Model model) {
 		Usuario usuario = this.BuscarUsuario();
@@ -102,7 +105,8 @@ public class TramiteController {
 
 		return "tramite/list";
 	}
-
+	
+	//retorna los tramites segun el usuario de una unidad en sesion. (App completa)
 	@GetMapping(value = "/listByUnidad")
 	public String ListByUnidad(Model model) {
 		Usuario usuario = this.BuscarUsuario();
@@ -124,6 +128,7 @@ public class TramiteController {
 	}
 
 	// METODOS PARA ASIGNAR UNA UNIDAD
+	//retorna la vista para asignar una unidad
 	@GetMapping(value = "/assignUnit/{id}")
 	public String AsignarUnidad(@PathVariable(value = "id") Integer id, Model model) {
 		Tramite tramite = this.srvTramite.findById(id);
@@ -135,6 +140,8 @@ public class TramiteController {
 		return "tramite/AsignarUnidad";
 	}
 
+	//asigna una unidad. Esta funcion esta disponible con un usuario relacionado con una direccion. Tambien se vuelve a subir el documento. 
+	//se debe actualizar esta funcion porque el campo se cambió de string a byte como campo de la tabla
 	@PostMapping(value = "/putUnit")
 	public String PonerUnidad(@RequestParam("file") MultipartFile file, Model model, String txtIdTram,
 			String slcUnidades, String txtRespuesta, String auxFile) {
@@ -176,6 +183,8 @@ public class TramiteController {
 	}
 
 	// METODOS PARA ASIGNAR DIRECCION
+	//asigna la direccion. Esto lo hace el usuario Alcaldia
+	//Tambien se debe actualizar subir el documento
 	@PostMapping(value = "/putDireccion")
 	public String PonerDireccion(@RequestParam("file") MultipartFile file, Model model, String txtIdTram,
 			String slcDirecciones, String txtRespuesta, String auxFile) {
@@ -215,7 +224,7 @@ public class TramiteController {
 		return "redirect:/tramite/listByDireccion";
 
 	}
-
+	//retirna la vista para asignar una direccion
 	@GetMapping(value = "/assignDireccion/{id}")
 	public String AsignarDireccion(@PathVariable(value = "id") Integer id, Model model) {
 		Tramite tramite = this.srvTramite.findById(id);
@@ -233,7 +242,9 @@ public class TramiteController {
 
 		return "tramite/ResponderTramite";
 	}
-
+	
+	//retorna una respuesta final al llegar al final de la jerarquia de municipio: Alcaldia -> Direcciones -> Unidades
+	//Tambien actuualizar la subida de documentos
 	@PostMapping(value = "/sendReply")
 	public String ResponderTramite(@RequestParam("file") MultipartFile file, Model model, String txtRespuesta,
 			String txtIdTram, String auxFile) {
@@ -270,14 +281,7 @@ public class TramiteController {
 
 	}
 
-//	@GetMapping(value = "/retrieve/{id}")
-//	public String Retrieve(@PathVariable(value = "id") Integer id, Model model) {
-//		Tramite tramite = this.srvTramite.findById(id);
-//		model.addAttribute("tramite", tramite);
-//
-//		return "tramite/retrieve";
-//	}
-	
+	//retorna la vista con la informacion del tramite
 	@GetMapping(value = "/retrieve/{id}")
 	public String Retrieve(@PathVariable(value = "id") Integer id, Model model) {
 		Tramite tramite = this.srvTramite.findById(id);
@@ -290,7 +294,8 @@ public class TramiteController {
 
 		return "tramite/retrieve";
 	}
-
+	
+	//retorna la el formulario del tramite con la info de un tramite para actualizar
 	@GetMapping(value = "/update/{id}")
 
 	public String Update(@PathVariable(value = "id") Integer id, Model model) {
@@ -307,14 +312,17 @@ public class TramiteController {
 		return "tramite/form";
 
 	}
-
+	
+	//elimina un tramite
 	@GetMapping(value = "/delete/{id}")
 	public String delete(@PathVariable(value = "id") Integer id, Model model, RedirectAttributes flash) {
 		this.srvTramite.Delete(id);
 		flash.addFlashAttribute("success", "Se ha eliminado con exito");
 		return "redirect:/tramite/list";
 	}
-
+	
+	//retorna un JSON para cargar la info para actualizar
+	//llamada asincrona desde un script 
 	@GetMapping(value = "/searchOneById/{id}", produces = "application/json")
 	public @ResponseBody Tramite searchOne(@PathVariable(value = "id") String id, Model model) {
 		Integer idTramite = Integer.valueOf(id);
@@ -335,52 +343,8 @@ public class TramiteController {
 		return usuario;
 	}
 
-//	@PostMapping(value = "/save")
-//	public String Save(@Validated Tramite tramite, BindingResult result, Model model,
-//			@RequestParam("file") MultipartFile file, String txtAsunto,String txtSumilla, String txtSol, String auxFile,
-//			RedirectAttributes flash) {
-//
-//		// Hora y fecha del sistema
-//		Calendar fechaSistema = Calendar.getInstance();
-//		java.util.Date horaSistema = Calendar.getInstance().getTime();
-//
-//		// id del soicitante
-//		Integer idSoli = Integer.valueOf(txtSol);
-//		Solicitante soli = this.srvSolicitente.findById(idSoli);
-//		
-//		
-//		// se está creando un nuevo
-//		if (tramite.getIdTramite() == null) {
-//			tramite.setFechaIngreso(fechaSistema);
-//			tramite.setHoraIngreso(horaSistema);
-//			tramite.setAsunto(txtAsunto);
-//			tramite.setSolicitante(soli);
-//			tramite.setDocumento(this.srvTramite.CargarArchivo(file));
-//			this.srvTramite.Save(tramite);
-//			
-//			flash.addFlashAttribute("success","Tramite registrado exitosamente");
-//
-//		} else {
-//			// se está actualizando
-//			Tramite tramiteBD = this.srvTramite.findById(tramite.getIdTramite());
-//			tramite.setFechaIngreso(tramiteBD.getFechaIngreso());
-//			tramite.setHoraIngreso(tramiteBD.getHoraIngreso());
-//			tramite.setAsunto(txtAsunto);
-//			tramite.setRespuesta(txtSumilla);;
-//			tramite.setSolicitante(soli);
-//			if (!file.isEmpty()) {
-//				tramite.setDocumento(this.srvTramite.CargarArchivo(file));
-//			}else {
-//				tramite.setDocumento(auxFile);
-//			}
-//			this.srvTramite.Save(tramite);
-//			flash.addFlashAttribute("success","Tramite actualizado exitosamente");
-//		}
-//
-//
-//		return "redirect:/tramite/list";
-//	}
-	
+
+	//guarda un nuevo registro o actualiza
 	@PostMapping(value = "/save")
 	public String Save(@Validated Tramite tramite, BindingResult result, Model model,
 			@RequestParam("file") MultipartFile file, String txtAsunto,String txtSumilla, String txtSol, String auxFile,
@@ -432,8 +396,8 @@ public class TramiteController {
 	
 	
 
-	// =======  REPORTES ================
-
+	// =======  REPORTES ================	
+	//retorna la vista para consultar los tramites solo de una fecha
 	@GetMapping(value = "/reportOneDate")
 	public String reporteFecha(Model model) {
 		// Calendar fecha = Calendar.getInstance();
@@ -443,6 +407,7 @@ public class TramiteController {
 		return "tramite/reporteFecha";
 	}
 
+	//retorna la vista para consultar tramites entre fechas
 	@GetMapping(value = "/reportBetweenDates")
 	public String reporteEntreFechas(Model model) {
 		// Calendar fecha = Calendar.getInstance();
@@ -473,6 +438,7 @@ public class TramiteController {
 		return tramitesFecha;
 	}
 
+	//consulta los tramites entre fechas y retorna un array de objetos json. Llamada asincrona con ajax
 	@GetMapping(value = "/getTramitesBetweenDates/{desde}/{hasta}", produces = "application/json")
 	public @ResponseBody List<Tramite> getTramitesEntreFechas(@PathVariable String desde, @PathVariable String hasta,
 			Model model) {
@@ -492,6 +458,7 @@ public class TramiteController {
 		return this.srvTramite.reporteEntreFechas(desdeDate, hastaDate);
 	}
 	
+	//muestra el archivo pdf 
 	@GetMapping(value="/showPDF/{idTramite}")
 	public void getPDFFile(@PathVariable Integer idTramite, HttpServletResponse response) {
 		System.out.println("Llego al controlador");

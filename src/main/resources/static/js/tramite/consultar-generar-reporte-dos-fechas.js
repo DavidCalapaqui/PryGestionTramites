@@ -26,7 +26,7 @@
 											
 											if(tramites.length != 0){
 												$("#lblErrNoTram").addClass("d-none");
-												
+												//dibuja las filas de los tramites
 												document.getElementById('lblTituloRep').innerHTML = 'Reporte de tramites ingresados desde '+ desde + ' hasta '+ hasta;
 												$("#table").removeClass("d-none");
 												$(".odd").remove();
@@ -77,7 +77,7 @@
 								
 							}
 							
-							
+							//peticion asincrona al servidor para geerar el reporte 
 							function GenerarReporte(){
 								let elementos = document.getElementsByName("format");
 								let formato = "";

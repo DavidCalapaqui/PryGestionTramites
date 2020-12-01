@@ -14,6 +14,8 @@ import com.calapaqui.tramites.models.entities.Direccion;
 
 @Service
 public class DireccionService implements IDireccionService{
+	
+	//implementacion de las interfaces
 
 	@Autowired
 	private IDireccion dao;

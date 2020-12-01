@@ -28,7 +28,8 @@ public class SolicitanteController {
 
 	@Autowired
 	private TramiteService srvTramite;
-
+	
+	//retorna el formulario para registrar un solicitante
 	@GetMapping(value = "/create")
 	public String Create(Model model) {
 		Solicitante solicitante = new Solicitante();
@@ -37,7 +38,8 @@ public class SolicitanteController {
 		return "solicitante/form";
 
 	}
-
+	
+	//retorna el la ventana para actualizar con la informacion del solicitante
 	@GetMapping(value = "/update/{id}")
 	public String Update(@PathVariable(value = "id") Integer id, Model model) {
 		Solicitante solicitante = this.srvSolicitante.findById(id);
@@ -45,7 +47,8 @@ public class SolicitanteController {
 		model.addAttribute("title", "Actualizando información de " + solicitante.getNombre());
 		return "solicitante/form";
 	}
-
+	
+	//elimina un solicitante
 	@GetMapping(value = "/delete/{id}")
 	public String delete(@PathVariable(value = "id") Integer id, Model model, RedirectAttributes flash) {
 		// buscar si el solicitante tiene tramites
@@ -60,7 +63,8 @@ public class SolicitanteController {
 		}
 		return "redirect:/solicitante/list";
 	}
-
+	
+	//retorna la vista de la lista con todos los registros de la bbdd
 	@GetMapping(value = "/list")
 	public String List(Model model) {
 		List<Solicitante> solicitantes = this.srvSolicitante.FindAll();
@@ -68,7 +72,8 @@ public class SolicitanteController {
 		model.addAttribute("title", "Listado de solicitantes");
 		return "solicitante/list";
 	}
-
+	
+	//guarda y actualiza un registro
 	@PostMapping(value = "/save")
 	public String Save(@Validated Solicitante solicitante, BindingResult result, RedirectAttributes flash,
 			Model model) {
@@ -100,14 +105,16 @@ public class SolicitanteController {
 		return "redirect:/tramite/create";
 
 	}
-
+	
+	//busca un solicitante por el numero de identificacion. Retorna un Json
 	@GetMapping(value = "/search/{criteria}", produces = "application/json")
 	public @ResponseBody List<Solicitante> search(@PathVariable(value = "criteria") String criteria, Model model) {
 		List<Solicitante> lista = this.srvSolicitante.FindByIdentificacion(criteria);
 		System.out.println(lista);
 		return lista;
 	}
-
+	
+	//busca un solicitante por el numero de identificacion. Retorna un Json
 	@GetMapping(value = "/searchOne/{criteria}", produces = "application/json")
 	public @ResponseBody Solicitante searchOne(@PathVariable(value = "criteria") String criteria, Model model) {
 

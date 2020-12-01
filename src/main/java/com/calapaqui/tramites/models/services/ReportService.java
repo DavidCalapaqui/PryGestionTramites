@@ -33,7 +33,8 @@ import net.sf.jasperreports.export.SimpleXlsxReportConfiguration;
 
 @Service
 public class ReportService {
-
+	/*Este serivicio compila los archivos jrxml para crear los reportes en excel o pdf
+	 * no funciona en produccion porque no se suben los recursos que se tiene en local en los directorios del proyecto*/
 	@Autowired
 	private ITramiteService srvTramite;
 

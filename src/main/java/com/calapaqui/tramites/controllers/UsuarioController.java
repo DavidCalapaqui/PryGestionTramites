@@ -30,7 +30,8 @@ public class UsuarioController {
 	@Autowired
 	private BCryptPasswordEncoder encoder;
 
-	private final String TAB_FORM = "formTab";
+	//retorna formulario para crear un usuario. Funcion disponible en  .../usuario/create
+	//solo se puede entrar con un usuario admin y esribiendo la URL
 	@GetMapping(value = "/create")
 	public String registro(Model model) {
 		Usuario usuario = new Usuario();
@@ -40,7 +41,7 @@ public class UsuarioController {
 		model.addAttribute("title", "Registro de nuevo usuario");
 		return "usuario/form";
 	}
-
+	
 	@GetMapping(value = "/configuration")
 	public String cambiarContrasena(Model model) {
 		Usuario usuario = this.BuscarUsuario();
@@ -49,25 +50,19 @@ public class UsuarioController {
 		return "usuario/form";
 	}
 
-	private void baseAttributerForUserForm(Model model, Usuario usuario, String activeTab) {
-		model.addAttribute("userForm", usuario);
-		model.addAttribute("userList", this.service.findAll());
-		// model.addAttribute("roles", roleRepository.findAll());
-		model.addAttribute(activeTab, "active");
-	}
-
+	
+	//devuelve la vista para actualizar la contraseña
 	@GetMapping("/editUser")
 	public String getEditUserForm(Model model) {
 		Usuario userToEdit = this.BuscarUsuario();
 
-		baseAttributerForUserForm(model, userToEdit, TAB_FORM);
 		model.addAttribute("title", "Actualizando información de " + userToEdit.getNombre());
 		model.addAttribute("usuario", userToEdit);
 		System.out.println("Usuario: " + userToEdit.getNombre());
 
 		return "usuario/user-configuration";
 	}
-
+	//actualiza la contraseña
 	@PostMapping("/postEditUser")
 	public String postEditUserForm(@Validated Usuario user, BindingResult result, Model model, 
 			String newPassword, RedirectAttributes flash) {
@@ -87,11 +82,12 @@ public class UsuarioController {
 
 	}
 	
+	//retorna verdadero o falso si la contraseña que se está escribiendo al cambiar la contraseña es la que esta registrada en a BD
 	@GetMapping(value="/validCurrentPassword/{currentPassword}", produces="application/json")
 	public @ResponseBody Boolean validCurrentPassword(@PathVariable(value="currentPassword") String password, Model model) {
 		Usuario sessUser = this.service.ObtenerUsuarioEnSesion();
 		String passDB = sessUser.getPassword();
-
+		//compara la contraseña registrada en la BD con la que se esta introducion
 		if(encoder.matches(password, passDB)) {
 			System.out.println("Coinciden las contraseñas");
 			return true;
@@ -115,7 +111,8 @@ public class UsuarioController {
 		Usuario usuario = this.service.findUserByName(userName);
 		return usuario;
 	}
-
+	
+	//guarda un usuario
 	@PostMapping(value = "/save")
 	public String save(@Validated Usuario usuario, BindingResult result, Model model, RedirectAttributes flash) {
 		try {
